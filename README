@@ -1,0 +1,11 @@
+That's it, here are my dotfiles; note that most of the things are very opinionated
+(obviously) and subject to breaking changes e.g. I switch the font once every couple
+of months, add/remove plugins if those are useful at a given moment or not, etc.
+
+Managing these via GNU Stow (recently knew about it), previously I was copying-pasting
+those which was totally pointless and, in consequence, pushing commits ~ once a year
+because the process was tedious.
+
+Note that the `.ssh/config` directory just contains the configuration for both GitHub and
+the Hugging Face Hub but it's neither included within `stow` nor exposing any public
+information, it's just useful if you configure Git over SSH for both of those VCSs.

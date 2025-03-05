@@ -1,0 +1,17 @@
+[pull]
+	rebase = false
+[user]
+	email = 36760800+alvarobartt@users.noreply.github.com
+	name = Alvaro Bartolome
+	signingkey = ~/.ssh/id_ed25519.pub
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[gpg]
+	format = ssh
+[commit]
+	gpgsign = true
+[init]
+	defaultBranch = main
