@@ -6,6 +6,23 @@ Managing these via GNU Stow (recently knew about it), previously I was copying-p
 those which was totally pointless and, in consequence, pushing commits ~ once a year
 because the process was tedious.
 
-Note that the `.ssh/config` directory just contains the configuration for both GitHub and
-the Hugging Face Hub but it's neither included within `stow` nor exposing any public
+Note that the .ssh/config file just contains the configuration for both GitHub and
+the Hugging Face Hub but it's neither included within stow nor exposing any public
 information, it's just useful if you configure Git over SSH for both of those VCSs.
+
+TL;DR You need to have installed git, nvim, LazyVim, tmux, Fish, Kitty, and probably more
+things (check scripts/hf-setup.sh for reference as it contains the standard setup workflow
+for at least nvim and LazyVim).
+
+```bash
+git clone git@github.com:alvarobartt/dotfiles.git
+cd dotfiles/
+stow fish kitty nvim starship tmux
+# optional
+stow scripts
+```
+
+Ignore both git/ and .ssh/ because those values should only be a reference, as those
+contain e.g. my name and email, as well as some absolute paths to my public SSH keys
+which may be located elsewhere in your case. Also ignore .github/ as it contains the
+trufflehog workflow required to check if any secret has been leaked.
