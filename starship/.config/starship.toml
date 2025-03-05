@@ -1,0 +1,54 @@
+# Disable the blank line at the start of the prompt
+add_newline = false
+
+format = "$time | $username:$directory│ "
+
+[time]
+disabled = false
+format = '[\[$time\]]($style)'
+time_format = "%H:%M"
+style = "dimmed white"
+
+[username]
+style_user = "bold green"
+format = "[$user]($style)"
+show_always = true
+
+[directory]
+truncation_length = 1
+truncate_to_repo = false
+style = "bold yellow"
+
+# Disable other modules
+[package]
+disabled = true
+
+[cmd_duration]
+disabled = true
+
+[git_branch]
+disabled = true
+
+[git_state]
+disabled = true
+
+[git_status]
+disabled = true
+
+[nodejs]
+disabled = true
+
+[python]
+disabled = true
+
+[ruby]
+disabled = true
+
+[rust]
+disabled = true
+
+[java]
+disabled = true
+
+[golang]
+disabled = true
