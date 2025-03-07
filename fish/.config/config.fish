@@ -69,7 +69,9 @@ end
 
 alias hf-ssh="kitten ssh -i ~/HuggingFace/alvaro-dev-us.pem"
 alias hf-setup="~/hf-setup.sh"
+
 alias give-me-tmux="~/give-me-tmux.sh"
+alias gmt="~/give-me-tmux.sh"
 
 # Added by LM Studio CLI (lms)
 set -gx PATH $PATH /Users/alvarobartt/.cache/lm-studio/bin
