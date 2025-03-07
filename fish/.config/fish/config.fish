@@ -41,8 +41,11 @@ set -g fish_color_valid_path --underline
 #     set_color normal
 # end
 
+# For Apple Silicon Macs
+set -gx PATH /opt/homebrew/bin:$PATH
+
 # Install Starship
-/opt/homebrew/bin/starship init fish | source
+starship init fish | source
 
 # Rust configuration
 set --export PATH $HOME/.cargo/bin $PATH
@@ -52,11 +55,11 @@ set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
 
 # uv
-fish_add_path "~/.local/bin"
+fish_add_path "$HOME/.local/bin"
 uv generate-shell-completion fish | source
 
 # pnpm
-set -gx PNPM_HOME /Users/alvarobartt/Library/pnpm
+set -gx PNPM_HOME "$HOME/Library/pnpm"
 if not string match -q -- $PNPM_HOME $PATH
     set -gx PATH "$PNPM_HOME" $PATH
 end
@@ -67,17 +70,17 @@ end
 #     source "$BASE16_SHELL/profile_helper.fish"
 # end
 
-alias hf-ssh="kitten ssh -i ~/HuggingFace/alvaro-dev-us.pem"
-alias hf-setup="~/hf-setup.sh"
+alias hf-ssh="kitten ssh -i $HOME/HuggingFace/alvaro-dev-us.pem"
+alias hf-setup="$HOME/hf-setup.sh"
 
-alias give-me-tmux="~/give-me-tmux.sh"
-alias gmt="~/give-me-tmux.sh"
+alias give-me-tmux="$HOME/give-me-tmux.sh"
+alias gmt="$HOME/give-me-tmux.sh"
 
 # Added by LM Studio CLI (lms)
-set -gx PATH $PATH /Users/alvarobartt/.cache/lm-studio/bin
+set -gx PATH $PATH "$HOME/.cache/lm-studio/bin"
 
 # zig language server
-set -gx ZLS_HOME /Users/alvarobartt/zls
+set -gx ZLS_HOME "$HOME/zls"
 if not string match -q -- $ZLS_HOME $PATH
     set -gx PATH "$ZLS_HOME" $PATH
 end
