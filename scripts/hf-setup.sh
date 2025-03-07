@@ -8,7 +8,7 @@ DEFAULT_SSH_KEY="~/HuggingFace/alvaro-dev-us.pem"
 
 # Check if the correct number of arguments is provided
 if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
-    echo "Usage: hf-setup <USER>@<IP> [SSH_KEY_PATH]"
+    echo "Usage: $0 <USER>@<IP> [SSH_KEY_PATH]"
     exit 1
 fi
 
