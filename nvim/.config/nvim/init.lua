@@ -178,7 +178,7 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = "rust",
+  pattern = { "rust", "ts" },
   callback = function()
     vim.bo.commentstring = "// %s" -- Space after double slash
   end
