@@ -194,7 +194,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 --- set autoformatting on file save with default auto-formatter
 vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = { "*.rs", "*.sh", "*.ts", "*.lua", "Dockerfile", "*.yaml" },
+  pattern = { "*.rs", "*.sh", "*.lua", "Dockerfile", "*.yaml" },
   callback = function()
     vim.lsp.buf.format({ async = false })
   end,
@@ -440,10 +440,11 @@ require("lazy").setup({
       -- because I may eventually need it here and there
       lspconfig.ts_ls.setup({
         filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
+        -- to be installed as `npm install -g typescript typescript-language-server`
         cmd = { "typescript-language-server", "--stdio" },
         on_attach = function(client, bufnr)
           -- disable ts_ls's formatting if you use another tool like prettier.
-          client.server_capabilities.documentFormattingProvider = false
+          -- client.server_capabilities.documentFormattingProvider = false
 
           -- create an autocmd group and set up formatting on save for the current buffer.
           vim.api.nvim_create_autocmd("BufWritePre", {
