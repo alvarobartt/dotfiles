@@ -28,7 +28,7 @@ while [[ "$#" -gt 0 ]]; do
             fi
             ;;
         --python)
-            IS_PYTHON_PROJECT=false
+            IS_PYTHON_PROJECT=true
             ;;
         *)
             echo "Unknown parameter passed: $1"
@@ -47,7 +47,7 @@ fi
 # Function to activate the Python environment if it's a Python project
 activate_env() {
     if [ "$IS_PYTHON_PROJECT" = true ]; then
-        echo "&& source .venv/bin/activate.fish"
+        echo "&& source .venv/bin/activate.fish "
     fi
 }
 
@@ -55,7 +55,7 @@ activate_env() {
 tmux new-session -d -s "$SESSION_NAME" -n "${SESSION_NAME}-nvim"
 
 # Set up the first window (nvim)
-tmux send-keys -t "$SESSION_NAME:${SESSION_NAME}-nvim" "cd $DIRECTORY $(activate_env) && nvim" C-m
+tmux send-keys -t "$SESSION_NAME:${SESSION_NAME}-nvim" "cd $DIRECTORY $(activate_env)&& nvim" C-m
 
 # Set up the second window (shell)
 tmux new-window -a -t "$SESSION_NAME" -n "${SESSION_NAME}-shell"
