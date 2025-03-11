@@ -162,11 +162,7 @@ fi
 
 # Install LazyVim plugins
 echo "Installing LazyVim plugins..."
-nvim --headless "+Lazy sync" +qa
-
-# Ensure Mason dependencies are installed
-echo "Installing Mason dependencies..."
-nvim --headless "+MasonInstall bash-language-server yaml-language-server dockerfile-language-server helm-ls typescript-language-server lua-language-server" +qa
+nvim --headless '+Lazy install' '+MasonInstallAll' '+qall'
 
 # Set up Git configuration
 git config --global init.defaultbranch main
