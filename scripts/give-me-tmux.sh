@@ -55,7 +55,7 @@ activate_env() {
 tmux new-session -d -s "$SESSION_NAME" -n "${SESSION_NAME}-nvim"
 
 # Set up the first window (nvim)
-tmux send-keys -t "$SESSION_NAME:${SESSION_NAME}-nvim" "cd $DIRECTORY $(activate_env) && nvim ." C-m
+tmux send-keys -t "$SESSION_NAME:${SESSION_NAME}-nvim" "cd $DIRECTORY $(activate_env) && nvim" C-m
 
 # Set up the second window (shell)
 tmux new-window -a -t "$SESSION_NAME" -n "${SESSION_NAME}-shell"
