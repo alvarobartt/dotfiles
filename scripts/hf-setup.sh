@@ -49,7 +49,7 @@ run_remote() {
     $scp_cmd ~/.config/nvim/init.lua "$USER@$IP:~/.config/nvim/init.lua"
     $scp_cmd ~/.ssh/id_ed25519 "$USER@$IP:~/.ssh/id_ed25519"
     $scp_cmd ~/.ssh/id_ed25519.pub "$USER@$IP:~/.ssh/id_ed25519.pub"
-    $scp_cmd ~/.config/.tmux.conf "$USER@$IP:~/.tmux.conf"
+    $scp_cmd ~/.tmux.conf "$USER@$IP:~/.tmux.conf"
 
     # Run the setup script with an updated PATH
     $ssh_cmd "$USER@$IP" 'PATH=\$PATH:/usr/bin:/bin:/usr/local/bin bash -s' <<EOF
