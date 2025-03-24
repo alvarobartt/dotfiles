@@ -807,4 +807,11 @@ require("lazy").setup({
       },
     }
   },
+  -- (not stable) typr i.e. like a monkey type experience but on terminal
+  -- {
+  --   "nvzone/typr",
+  --   dependencies = "nvzone/volt",
+  --   opts = {},
+  --   cmd = { "Typr", "TyprStats" },
+  -- }
 })
