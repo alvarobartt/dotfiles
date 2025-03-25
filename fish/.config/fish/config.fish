@@ -72,12 +72,13 @@ end
 
 alias hf-ssh="kitten ssh -i $HOME/HuggingFace/alvaro-dev-us.pem"
 alias hf-setup="$HOME/hf-setup.sh"
+alias hf-repo="$HOME/hf-repo.sh"
 
 alias give-me-tmux="$HOME/give-me-tmux.sh"
 alias gmt="$HOME/give-me-tmux.sh"
 
-# Added by LM Studio CLI (lms)
-set -gx PATH $PATH "$HOME/.cache/lm-studio/bin"
+alias checkout-tag="$HOME/checkout-tag.sh"
+alias cot="$HOME/checkout-tag.sh"
 
 # zig language server
 set -gx ZLS_HOME "$HOME/zls"
