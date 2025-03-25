@@ -44,8 +44,11 @@ run_remote() {
     local ssh_cmd="ssh -i $SSH_KEY_PATH"
     local scp_cmd="scp -i $SSH_KEY_PATH"
 
-    # Create necessary directories on remote machine and copy files (overwrite existing ones)
+    # Create the `.ssh` directory and assign permissions
     $ssh_cmd "$USER@$IP" "/usr/bin/mkdir -p ~/.config/nvim ~/.ssh"
+    $ssh_cmd "$USER@$IP" "chmod 700 ~/.ssh"
+
+    # Create necessary directories on remote machine and copy files (overwrite existing ones)
     $scp_cmd ~/.config/nvim/init.lua "$USER@$IP:~/.config/nvim/init.lua"
     $scp_cmd ~/.ssh/id_ed25519 "$USER@$IP:~/.ssh/id_ed25519"
     $scp_cmd ~/.ssh/id_ed25519.pub "$USER@$IP:~/.ssh/id_ed25519.pub"
@@ -66,6 +69,36 @@ EOF
 REMOTE_SCRIPT=$(
     cat <<'EOFSCRIPT'
 #!/bin/bash
+
+# Create .ssh/config only if it doesn't exist
+if [ ! -f ~/.ssh/config ]; then
+    cat << 'EOF' > ~/.ssh/config
+Host github.com
+  AddKeysToAgent yes
+  IdentityFile ~/.ssh/id_ed25519
+
+Host hf.co
+  AddKeysToAgent yes
+  IdentityFile ~/.ssh/id_ed25519
+EOF
+fi
+
+# Configure SSH agent persistence if not already present
+if ! grep -q "ssh-add ~/.ssh/id_ed25519" ~/.bash_profile; then
+    cat << 'EOF' >> ~/.bash_profile
+
+# SSH Agent management (only for interactive logins)
+if [ -n "$SSH_CONNECTION" ] && [ -z "$SSH_AGENT_PID" ]; then
+    eval "$(ssh-agent -s -t 86400)" >/dev/null  # 24h timeout
+    ssh-add ~/.ssh/id_ed25519
+fi
+EOF
+fi
+
+# Set correct permissions for SSH keys
+chmod 600 ~/.ssh/id_ed25519
+chmod 644 ~/.ssh/id_ed25519.pub
+chmod 600 ~/.ssh/config
 
 # Function to check and install packages
 install_package() {
