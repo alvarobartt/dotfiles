@@ -54,6 +54,9 @@ run_remote() {
     $scp_cmd ~/.ssh/id_ed25519.pub "$USER@$IP:~/.ssh/id_ed25519.pub"
     $scp_cmd ~/.tmux.conf "$USER@$IP:~/.tmux.conf"
 
+    # Also add the GPG key used to sign commits on the Hugging Face Hub
+    $scp_cmd ~/hf-sign-priv.asc "$USER@$IP:~/hf-sign-priv.asc"
+
     # Run the setup script with an updated PATH
     $ssh_cmd "$USER@$IP" 'PATH=\$PATH:/usr/bin:/bin:/usr/local/bin bash -s' <<EOF
 # Source .bashrc and .profile if they exist
@@ -99,6 +102,10 @@ fi
 chmod 600 ~/.ssh/id_ed25519
 chmod 644 ~/.ssh/id_ed25519.pub
 chmod 600 ~/.ssh/config
+
+# Set correct permissions for GPG key
+chmod 600 ~/hf-sign-priv.asc
+gpg --import ~/hf-sign-priv.asc
 
 # Function to check and install packages
 install_package() {
@@ -205,6 +212,9 @@ git config --global init.defaultbranch main
 git config --global pull.rebase false
 git config --global user.email "36760800+alvarobartt@users.noreply.github.com"
 git config --global user.name "Alvaro Bartolome"
+# NOTE: for Hugging Face repositories the SSH key cannot be used to sign the
+# commits, so we need to rely on `hf-repo.sh` to set the signing up with GPG, and
+# also to update the email.
 git config --global user.signingkey "~/.ssh/id_ed25519.pub"
 git config --global gpg.format ssh
 git config --global commit.gpgsign true
