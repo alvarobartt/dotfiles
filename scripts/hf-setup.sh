@@ -55,6 +55,7 @@ run_remote() {
     $scp_cmd ~/.tmux.conf "$USER@$IP:~/.tmux.conf"
 
     # Also add the GPG key used to sign commits on the Hugging Face Hub
+    # TODO(gpg): Temporarily remove until fully fixed
     $scp_cmd ~/hf-sign-priv.asc "$USER@$IP:~/hf-sign-priv.asc"
 
     # Run the setup script with an updated PATH
@@ -103,9 +104,10 @@ chmod 600 ~/.ssh/id_ed25519
 chmod 644 ~/.ssh/id_ed25519.pub
 chmod 600 ~/.ssh/config
 
-# Set correct permissions for GPG key
-chmod 600 ~/hf-sign-priv.asc
-gpg --import ~/hf-sign-priv.asc
+# TODO(gpg): Temporarily remove until fully fixed
+# # Set correct permissions for GPG key
+# chmod 600 ~/hf-sign-priv.asc
+# gpg --import ~/hf-sign-priv.asc
 
 # Function to check and install packages
 install_package() {

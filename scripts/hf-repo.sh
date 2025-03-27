@@ -15,15 +15,17 @@ fi
 
 # Get GPG key ID associated with email
 email="alvaro.bartolome@huggingface.co"
-key_id=$(gpg --list-keys --with-colons "alvaro.bartolome@huggingface.co" 2>/dev/null | rg '^fpr:::::::::([^:]+):' -o -r '$1' | head -n 1)
-if [ -z "$key_id" ]; then
-    echo "Error: No GPG key found"
-    exit 1
-fi
+# TODO(gpg): Temporarily remove until fully fixed
+# key_id=$(gpg --list-keys --with-colons "alvaro.bartolome@huggingface.co" 2>/dev/null | rg '^fpr:::::::::([^:]+):' -o -r '$1' | head -n 1)
+# if [ -z "$key_id" ]; then
+#     echo "Error: No GPG key found"
+#     exit 1
+# fi
 
 # Set the credentials for Hugging Face repositories
 git config --local user.email "$email"
-git config --local gpg.format "openpgp"
-git config --local user.signingkey "$key_id"
+# TODO(gpg): Temporarily remove until fully fixed
+# git config --local gpg.format "openpgp"
+# git config --local user.signingkey "$key_id"
 
 echo "Hugging Face repository credentials set successfully"
