@@ -147,7 +147,7 @@ else
 fi
 
 # Activate virtual environment by default in shell configuration files
-grep -qxF 'source $HOME/.venv/bin/activate' ~/.bashrc || echo 'source .venv/bin/activate' >> ~/.bashrc
+grep -qxF 'source $HOME/.venv/bin/activate' ~/.bashrc || echo 'source $HOME/.venv/bin/activate' >> ~/.bashrc
 
 # Install ruff and pyright in the virtual environment using uv tool install
 echo "Installing ruff and pyright..."
