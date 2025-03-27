@@ -114,6 +114,9 @@ install_package() {
 install_package ripgrep
 install_package fd-find
 
+# Also install git-lfs required when working with Hugging Face Hub repositories
+install_package git-lfs
+
 # Remove pyenv if it exists
 if [ -d "$HOME/.pyenv" ]; then
     echo "Removing pyenv..."
