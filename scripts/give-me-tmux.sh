@@ -2,37 +2,58 @@
 
 # Function to display usage information
 usage() {
-    echo "Usage: $0 --session-name SESSION_NAME --directory DIRECTORY [--python]"
+    echo "Usage: $0 [-s SESSION_NAME] [-d DIRECTORY] [-p]"
+    echo "       $0 [--session-name SESSION_NAME] [--directory DIRECTORY] [--python]"
+    echo "       $0 SESSION_NAME DIRECTORY [--python]"
     exit 1
 }
+
+# Initialize variables
+SESSION_NAME=""
+DIRECTORY=""
+IS_PYTHON_PROJECT=false
 
 # Parse command line arguments
 while [[ "$#" -gt 0 ]]; do
     case $1 in
-        --session-name)
+        -s|--session-name)
             if [ -n "$2" ]; then
                 SESSION_NAME="$2"
                 shift
             else
-                echo "Error: --session-name requires a value."
+                echo "Error: $1 requires a value."
                 usage
             fi
             ;;
-        --directory)
+        -d|--directory)
             if [ -n "$2" ]; then
                 DIRECTORY="$2"
                 shift
             else
-                echo "Error: --directory requires a value."
+                echo "Error: $1 requires a value."
                 usage
             fi
             ;;
-        --python)
+        -p|--python)
             IS_PYTHON_PROJECT=true
             ;;
-        *)
-            echo "Unknown parameter passed: $1"
+        --) # End of all options
+            shift
+            break
+            ;;
+        -*)
+            echo "Unknown option: $1"
             usage
+            ;;
+        *) # Positional arguments (SESSION_NAME and DIRECTORY)
+            if [ -z "$SESSION_NAME" ]; then
+                SESSION_NAME="$1"
+            elif [ -z "$DIRECTORY" ]; then
+                DIRECTORY="$1"
+            else
+                echo "Unknown parameter or too many positional arguments: $1"
+                usage
+            fi
             ;;
     esac
     shift
@@ -40,7 +61,7 @@ done
 
 # Check if mandatory parameters are provided
 if [ -z "$SESSION_NAME" ] || [ -z "$DIRECTORY" ]; then
-    echo "Error: Both --session-name and --directory are required parameters."
+    echo "Error: Both session name and directory are required."
     usage
 fi
 
