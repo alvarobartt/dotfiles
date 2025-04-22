@@ -74,6 +74,15 @@ REMOTE_SCRIPT=$(
     cat <<'EOFSCRIPT'
 #!/bin/bash
 
+# Ensure .bashrc is sourced on login shells
+if ! grep -qxF 'if [ -f ~/.bashrc ]; then . ~/.bashrc; fi' ~/.bash_profile 2>/dev/null; then
+    echo 'if [ -f ~/.bashrc ]; then . ~/.bashrc; fi' >> ~/.bash_profile
+fi
+
+if ! grep -qxF 'if [ -f ~/.bashrc ]; then . ~/.bashrc; fi' ~/.profile 2>/dev/null; then
+    echo 'if [ -f ~/.bashrc ]; then . ~/.bashrc; fi' >> ~/.profile
+fi
+
 # Create .ssh/config only if it doesn't exist
 if [ ! -f ~/.ssh/config ]; then
     cat << 'EOF' > ~/.ssh/config
