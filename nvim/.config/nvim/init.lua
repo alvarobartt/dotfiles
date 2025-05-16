@@ -27,11 +27,9 @@ vim.opt.colorcolumn = "80"
 vim.api.nvim_create_autocmd("Filetype", { pattern = "rust", command = "set colorcolumn=100" })
 -- vim.api.nvim_create_autocmd("Filetype", { pattern = "python", command = "set colorcolumn=112" })
 vim.opt.listchars = "tab:^ ,nbsp:¬,extends:»,precedes:«,trail:•"
-
 -- disable format-on-save from `ziglang/zig.vim`
 vim.g.zig_fmt_parse_errors = 0
 vim.g.zig_fmt_autosave = 0
-
 -- quick-open
 vim.keymap.set("", "<C-p>", "<cmd>Files<cr>")
 -- search buffers
@@ -328,7 +326,19 @@ require("lazy").setup({
       "nvim-lua/plenary.nvim",
     },
     config = function()
-      require("spectre").setup()
+      require("spectre").setup({
+        -- https://github.com/nvim-pack/nvim-spectre/issues/118#issuecomment-1531683211
+        replace_engine = {
+          ["sed"] = {
+            cmd = "sed",
+            args = {
+              "-i",
+              "",  -- Empty string for no backup (mandatory on BSD sed)
+              "-E" -- Extended regex for capture groups
+            },
+          },
+        }
+      })
       vim.keymap.set("n", "<leader>S", '<cmd>lua require("spectre").open()<CR>', { desc = "Open Spectre" })
       vim.keymap.set(
         "n",
