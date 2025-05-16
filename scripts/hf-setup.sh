@@ -28,7 +28,7 @@ SSH_KEY_PATH=${2:-$DEFAULT_SSH_KEY}
 # Function to add host key to known_hosts
 add_to_known_hosts() {
     local ip=$1
-    ssh-keyscan -H $ip >>~/.ssh/known_hosts 2>/dev/null
+    ssh-keyscan -H $ip >>~/.ssh/known_hosts 3>/dev/null
     if [ $? -eq 0 ]; then
         echo "Host key for $ip added to known_hosts"
     else
