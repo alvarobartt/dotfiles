@@ -328,16 +328,33 @@ require("lazy").setup({
     config = function()
       require("spectre").setup({
         -- https://github.com/nvim-pack/nvim-spectre/issues/118#issuecomment-1531683211
+        -- replace_engine = {
+        --   ["sed"] = {
+        --     cmd = "sed",
+        --     args = {
+        --       "-i",
+        --       "",  -- Empty string for no backup (mandatory on BSD sed)
+        --       "-E" -- Extended regex for capture groups
+        --     },
+        --   },
+        -- },
+        -- default = {
+        --   replace = {
+        --     cmd_esc = [[\\\\\()%[%]^$@/.*~&|]], -- Escape special chars
+        --     options = "C"
+        --   }
+        -- }
         replace_engine = {
-          ["sed"] = {
-            cmd = "sed",
-            args = {
-              "-i",
-              "",  -- Empty string for no backup (mandatory on BSD sed)
-              "-E" -- Extended regex for capture groups
-            },
+          ["sd"] = {
+            cmd = "sd",
+            args = {},
           },
-        }
+        },
+        default = {
+          replace = {
+            cmd = "sd",
+          },
+        },
       })
       vim.keymap.set("n", "<leader>S", '<cmd>lua require("spectre").open()<CR>', { desc = "Open Spectre" })
       vim.keymap.set(
