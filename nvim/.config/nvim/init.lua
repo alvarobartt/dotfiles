@@ -837,6 +837,18 @@ require("lazy").setup({
       },
     }
   },
+  -- claude-code.nvim
+  {
+    "greggh/claude-code.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim", -- required for git operations
+    },
+    branch = "main",
+    config = function()
+      require("claude-code").setup({})
+      vim.keymap.set("n", "<leader>cc", "<cmd>ClaudeCode<cr>", { desc = "Claude Code Command" })
+    end,
+  },
   -- (not stable) typr i.e. like a monkey type experience but on terminal
   -- {
   --   "nvzone/typr",
