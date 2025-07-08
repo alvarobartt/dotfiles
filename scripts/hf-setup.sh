@@ -186,6 +186,8 @@ grep -qxF 'source $HOME/.cargo/env' ~/.bashrc || echo 'source $HOME/.cargo/env' 
 
 echo "Installing rust-analyzer..."
 rustup component add rust-analyzer
+echo "Installing sd (sed replacement)"
+cargo install sd
 
 # Install Node.js and npm (required for some LazyVim plugins)
 if ! command -v node &> /dev/null; then
