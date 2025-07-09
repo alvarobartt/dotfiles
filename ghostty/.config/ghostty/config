@@ -7,6 +7,9 @@ macos-titlebar-style = hidden
 window-padding-x = 10,10
 window-padding-y = 10,10
 
+window-height = 47
+window-width = 206
+
 font-family = Iosevka Fixed
 
 font-style = Light
