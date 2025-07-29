@@ -75,6 +75,7 @@ alias hf-ssh-us="kitten ssh -i $HOME/HuggingFace/alvaro-dev-us.pem"
 alias hf-ssh-eu="kitten ssh -i $HOME/HuggingFace/alvaro-dev-eu.pem"
 alias hf-setup="$HOME/hf-setup.sh"
 alias hf-repo="$HOME/hf-repo.sh"
+alias ec2-turn="$HOME/ec2-turn.sh"
 
 alias give-me-tmux="$HOME/give-me-tmux.sh"
 alias gmt="$HOME/give-me-tmux.sh"
