@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Check if the current directory is a Git repository
-if ! git rev-parse --is-inside-work-tree &> /dev/null; then
+if ! git rev-parse --is-inside-work-tree &>/dev/null; then
     echo "Error: Not a Git repository"
     exit 1
 fi

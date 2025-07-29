@@ -16,45 +16,45 @@ IS_PYTHON_PROJECT=false
 # Parse command line arguments
 while [[ "$#" -gt 0 ]]; do
     case $1 in
-        -s|--session-name)
-            if [ -n "$2" ]; then
-                SESSION_NAME="$2"
-                shift
-            else
-                echo "Error: $1 requires a value."
-                usage
-            fi
-            ;;
-        -d|--directory)
-            if [ -n "$2" ]; then
-                DIRECTORY="$2"
-                shift
-            else
-                echo "Error: $1 requires a value."
-                usage
-            fi
-            ;;
-        -p|--python)
-            IS_PYTHON_PROJECT=true
-            ;;
-        --) # End of all options
+    -s | --session-name)
+        if [ -n "$2" ]; then
+            SESSION_NAME="$2"
             shift
-            break
-            ;;
-        -*)
-            echo "Unknown option: $1"
+        else
+            echo "Error: $1 requires a value."
             usage
-            ;;
-        *) # Positional arguments (SESSION_NAME and DIRECTORY)
-            if [ -z "$SESSION_NAME" ]; then
-                SESSION_NAME="$1"
-            elif [ -z "$DIRECTORY" ]; then
-                DIRECTORY="$1"
-            else
-                echo "Unknown parameter or too many positional arguments: $1"
-                usage
-            fi
-            ;;
+        fi
+        ;;
+    -d | --directory)
+        if [ -n "$2" ]; then
+            DIRECTORY="$2"
+            shift
+        else
+            echo "Error: $1 requires a value."
+            usage
+        fi
+        ;;
+    -p | --python)
+        IS_PYTHON_PROJECT=true
+        ;;
+    --) # End of all options
+        shift
+        break
+        ;;
+    -*)
+        echo "Unknown option: $1"
+        usage
+        ;;
+    *) # Positional arguments (SESSION_NAME and DIRECTORY)
+        if [ -z "$SESSION_NAME" ]; then
+            SESSION_NAME="$1"
+        elif [ -z "$DIRECTORY" ]; then
+            DIRECTORY="$1"
+        else
+            echo "Unknown parameter or too many positional arguments: $1"
+            usage
+        fi
+        ;;
     esac
     shift
 done
