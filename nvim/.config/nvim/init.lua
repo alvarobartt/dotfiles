@@ -181,6 +181,15 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.bo.commentstring = "// %s" -- Space after double slash
   end
 })
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "sh",
+  callback = function()
+    vim.opt_local.tabstop = 4
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.softtabstop = 4
+    vim.opt_local.expandtab = true
+  end,
+})
 --- update lua settings to use an indent size of 2 spaces instead
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "lua",
@@ -192,9 +201,21 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 --- set autoformatting on file save with default auto-formatter
 vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = { "*.rs", "*.sh", "*.lua", "Dockerfile", "*.yaml" },
+  pattern = { "*.rs", "*.lua", "Dockerfile", "*.yaml" },
   callback = function()
     vim.lsp.buf.format({ async = false })
+  end,
+})
+--- set autoformatting on file save for bash with shfmt
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.sh",
+  callback = function()
+    -- Save cursor position
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    -- Format buffer with shfmt, 4 space indentation
+    vim.cmd("%!shfmt -i 4")
+    -- Optionally restore cursor position (improves UX)
+    pcall(vim.api.nvim_win_set_cursor, 0, { row, col })
   end,
 })
 --- set autoformatting on file save for zig
@@ -739,6 +760,7 @@ require("lazy").setup({
         "helm-ls",
         "typescript-language-server",
         "lua-language-server",
+        "shfmt",
       },
       automatic_installation = true,
     },
