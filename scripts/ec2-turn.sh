@@ -4,8 +4,8 @@ set -euo pipefail
 
 usage() {
     echo "Usage: $0 <on|off> <instance-name> [region] [profile]"
-    echo "  on:  Start the EC2 instance by name"
-    echo "  off: Stop the EC2 instance by name"
+    echo "  on:  Start the EC2 instance by name and print its host IP"
+    echo "  off: Stop  the EC2 instance by name"
     exit 1
 }
 
@@ -30,41 +30,46 @@ get_instance_id() {
         --output text
 }
 
+get_instance_ip() {
+    local field
+    field="${1}" # PublicIpAddress or PrivateIpAddress
+    aws ec2 describe-instances \
+        --instance-ids "$INSTANCE_ID" \
+        "${AWS_OPTS[@]}" \
+        --query "Reservations[0].Instances[0].${field}" \
+        --output text
+}
+
 retry_action() {
     local action_cmd="$1"
     local wait_cmd="$2"
     local action="$3"
     local instance_id="$4"
     local output=""
-
     for ATTEMPT in {1..5}; do
-        echo "[$ATTEMPT/5] Attempting to $action instance '$INSTANCE_NAME' ($instance_id)..."
         set +e
         output=$(eval "$action_cmd" 2>&1)
         rc=$?
         set -e
         if [[ $rc -eq 0 ]]; then
-            echo "'$action' command accepted. Waiting for instance state change..."
             eval "$wait_cmd"
-            echo "Instance '$INSTANCE_NAME' ($instance_id) is now ${action/ing/ed}."
             return 0
         else
-            echo "Failed to $action instance. AWS CLI output:"
-            echo "$output"
-            [[ $ATTEMPT -lt 5 ]] && echo "Retrying in 10s..." && sleep 10
+            >&2 echo "Failed to $action instance. AWS CLI output:"
+            >&2 echo "$output"
+            [[ $ATTEMPT -lt 5 ]] && sleep 10
         fi
     done
-
-    echo "Error: Failed to $action instance '$INSTANCE_NAME' ($instance_id) after 5 attempts."
-    echo "Last AWS CLI error:"
-    echo "$output"
-    echo "Advice: Please check your AWS quotas/capacity or try again later."
+    >&2 echo "Error: Failed to $action instance '$INSTANCE_NAME' ($instance_id) after 5 attempts."
+    >&2 echo "Last AWS CLI error:"
+    >&2 echo "$output"
+    >&2 echo "Advice: Please check your AWS quotas/capacity or try again later."
     exit 3
 }
 
 INSTANCE_ID=$(get_instance_id)
 if [[ -z "$INSTANCE_ID" ]]; then
-    echo "Error: No instance found with name '$INSTANCE_NAME'."
+    >&2 echo "Error: No instance found with name '$INSTANCE_NAME'."
     exit 2
 fi
 
@@ -75,6 +80,17 @@ on)
         "aws ec2 wait instance-running --instance-ids \"$INSTANCE_ID\" ${AWS_OPTS[*]}" \
         "start" \
         "$INSTANCE_ID"
+    # Now fetch the public IP (or private if not available)
+    IP=$(get_instance_ip PublicIpAddress)
+    if [[ "$IP" == "None" || -z "$IP" ]]; then
+        # Fallback to private IP if there's no public IP
+        IP=$(get_instance_ip PrivateIpAddress)
+        if [[ "$IP" == "None" || -z "$IP" ]]; then
+            >&2 echo "Error: Instance started but has no public or private IP."
+            exit 4
+        fi
+    fi
+    echo "ssh -i ~/HuggingFace/alvaro-dev-us.pem ubuntu@$IP"
     ;;
 off)
     retry_action \
