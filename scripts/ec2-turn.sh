@@ -93,11 +93,18 @@ on)
     echo "ssh -i ~/HuggingFace/alvaro-dev-us.pem ubuntu@$IP"
     ;;
 off)
-    retry_action \
-        "aws ec2 stop-instances --instance-ids \"$INSTANCE_ID\" ${AWS_OPTS[*]}" \
-        "aws ec2 wait instance-stopped --instance-ids \"$INSTANCE_ID\" ${AWS_OPTS[*]}" \
-        "stop" \
-        "$INSTANCE_ID"
+    # Send stop request without waiting
+    set +e
+    output=$(aws ec2 stop-instances --instance-ids "$INSTANCE_ID" "${AWS_OPTS[@]}" 2>&1)
+    rc=$?
+    set -e
+    if [[ $rc -eq 0 ]]; then
+        echo "Instance $INSTANCE_NAME is stopping already, stopping the instance might take ~2-3 minutes"
+    else
+        >&2 echo "Failed to stop instance. AWS CLI output:"
+        >&2 echo "$output"
+        exit 3
+    fi
     ;;
 *)
     usage
