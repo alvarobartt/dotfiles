@@ -4,8 +4,8 @@ set -euo pipefail
 
 usage() {
     echo "Usage: $0 <on|off> <instance-name> [region] [profile]"
-    echo "  on:  Start the EC2 instance by name and print its host IP"
-    echo "  off: Stop  the EC2 instance by name"
+    echo "   on: Start the EC2 instance by name and print its host IP"
+    echo "  off: Stop the EC2 instance by name"
     exit 1
 }
 
