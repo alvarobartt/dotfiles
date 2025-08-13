@@ -308,12 +308,39 @@ require("lazy").setup({
       telescope.setup({
         defaults = {
           disable_devicons = true,
+          vimgrep_arguments = {
+            "rg",
+            "--color=never",
+            "--no-heading",
+            "--with-filename",
+            "--line-number",
+            "--column",
+            "--smart-case",
+            "--hidden",
+            "--glob",
+            "!**/.git/*",
+          },
+        },
+        pickers = {
+          find_files = {
+            find_command = {
+              "rg",
+              "--files",
+              "--hidden",
+              "--glob",
+              "!**/.git/*",
+            },
+          },
+          live_grep = {
+            additional_args = function()
+              return { "--hidden", "--glob", "!**/.git/*" }
+            end,
+          },
         },
       })
-
       local builtin = require("telescope.builtin")
-      vim.keymap.set("n", "<leader><leader>", builtin.find_files, {})
-      vim.keymap.set("n", "<leader>/", builtin.live_grep, {})
+      vim.keymap.set("n", "<leader><leader>", builtin.find_files)
+      vim.keymap.set("n", "<leader>/", builtin.live_grep)
     end,
   },
   -- neotree
