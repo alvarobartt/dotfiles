@@ -156,12 +156,7 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
   command = "set filetype=dockerfile",
 })
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "markdown", "lua", "rust", "dockerfile", "zig", "c", "sh" },
-  callback = function()
-  end,
-})
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "markdown", "lua", "rust", "dockerfile", "zig", "c", "sh", "text" },
+  pattern = { "lua", "rust", "dockerfile", "zig", "c", "sh", "python", "toml", "json", "yaml", "markdown" },
   callback = function()
     -- enable whitespace visualization (spaces as dots) for specific file types
     vim.opt_local.list = true
@@ -170,6 +165,15 @@ vim.api.nvim_create_autocmd("FileType", {
       vim.api.nvim_set_hl(0, "TrailingWhitespace", { bg = "#f43841", fg = "#f43841" })
       vim.fn.matchadd('TrailingWhitespace', [[\s\+$]], 120)
     end)
+  end,
+})
+-- handle files without filetype (plain text files like config files)
+vim.api.nvim_create_autocmd("BufWinEnter", {
+  callback = function()
+    -- Only apply to files with no filetype or text filetype
+    if vim.bo.filetype == "" or vim.bo.filetype == "text" then
+      vim.fn.matchadd('TrailingWhitespace', [[\s\+$]])
+    end
   end,
 })
 local text = vim.api.nvim_create_augroup("text", { clear = true })
@@ -244,7 +248,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   end,
 })
 --- set autoformatting on file save for zig
-vim.api.nvim_create_autocmd('BufWritePre', {
+vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = { "*.zig", "*.zon" },
   callback = function(ev)
     vim.lsp.buf.code_action({
@@ -594,7 +598,7 @@ require("lazy").setup({
       -- helm support (?)
       lspconfig.helm_ls.setup {
         settings = {
-          ['helm-ls'] = {
+          ["helm-ls"] = {
             yamlls = {
               path = "yaml-language-server",
             }
@@ -606,11 +610,11 @@ require("lazy").setup({
       -- lua lsp
       lspconfig.lua_ls.setup({
         on_init = function(client)
-          client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+          client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
             runtime = {
               -- Tell the language server which version of Lua you're using
               -- (most likely LuaJIT in the case of Neovim)
-              version = 'LuaJIT'
+              version = "LuaJIT"
             },
             -- Make the server aware of Neovim runtime files
             workspace = {
