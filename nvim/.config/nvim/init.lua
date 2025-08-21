@@ -147,6 +147,11 @@ vim.api.nvim_create_autocmd("BufRead", { pattern = "*.orig", command = "set read
 vim.api.nvim_create_autocmd("BufRead", { pattern = "*.pacnew", command = "set readonly" })
 -- leave paste mode when leaving insert mode (if it was on)
 vim.api.nvim_create_autocmd("InsertLeave", { pattern = "*", command = "set nopaste" })
+-- set dockerfile filetype for files starting with "Dockerfile"
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  pattern = "Dockerfile*",
+  command = "set filetype=dockerfile",
+})
 local text = vim.api.nvim_create_augroup("text", { clear = true })
 vim.api.nvim_create_autocmd("Filetype", {
   pattern = { "text", "markdown", "gitcommit" },
@@ -201,7 +206,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 --- set autoformatting on file save with default auto-formatter
 vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = { "*.rs", "*.lua", "Dockerfile", "*.yaml" },
+  pattern = { "*.rs", "*.lua", "Dockerfile*", "*.yaml" },
   callback = function()
     vim.lsp.buf.format({ async = false })
   end,
@@ -534,6 +539,7 @@ require("lazy").setup({
 
       -- Docker language server
       lspconfig.dockerls.setup({
+        filetypes = { "dockerfile" },
         on_attach = function(client, bufnr)
           -- Enable formatting
           client.server_capabilities.documentFormattingProvider = true
