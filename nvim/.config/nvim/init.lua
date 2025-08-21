@@ -26,7 +26,8 @@ vim.opt.diffopt:append("indent-heuristic")
 vim.opt.colorcolumn = "80"
 vim.api.nvim_create_autocmd("Filetype", { pattern = "rust", command = "set colorcolumn=100" })
 -- vim.api.nvim_create_autocmd("Filetype", { pattern = "python", command = "set colorcolumn=112" })
-vim.opt.listchars = "tab:^ ,nbsp:¬,extends:»,precedes:«,trail:•"
+vim.opt.listchars = "tab:^ ,nbsp:¬,extends:»,precedes:«,trail:█,space:·"
+vim.opt.list = false
 -- disable format-on-save from `ziglang/zig.vim`
 vim.g.zig_fmt_parse_errors = 0
 vim.g.zig_fmt_autosave = 0
@@ -152,6 +153,23 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
   pattern = "Dockerfile*",
   command = "set filetype=dockerfile",
 })
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown", "lua", "rust", "dockerfile", "zig", "c", "sh" },
+  callback = function()
+  end,
+})
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown", "lua", "rust", "dockerfile", "zig", "c", "sh", "text" },
+  callback = function()
+    -- enable whitespace visualization (spaces as dots) for specific file types
+    vim.opt_local.list = true
+    -- highlight trailing whitespace as red blocks for specific file types only
+    vim.schedule(function()
+      vim.api.nvim_set_hl(0, "TrailingWhitespace", { bg = "#f43841", fg = "#f43841" })
+      vim.fn.matchadd('TrailingWhitespace', [[\s\+$]], 120)
+    end)
+  end,
+})
 local text = vim.api.nvim_create_augroup("text", { clear = true })
 vim.api.nvim_create_autocmd("Filetype", {
   pattern = { "text", "markdown", "gitcommit" },
@@ -274,6 +292,9 @@ require("lazy").setup({
       })
       vim.o.background = "dark"
       vim.cmd([[colorscheme gruber-darker]])
+      -- Set space visualization colors using Gruber Dark palette
+      vim.api.nvim_set_hl(0, "Whitespace", { fg = "#2a2a2a", blend = 95 }) -- Extremely subtle for normal spaces
+      vim.api.nvim_set_hl(0, "TrailingWhitespace", { bg = "#f43841" })     -- Red background for trailing spaces
     end,
   },
   -- previously I was using this but let's try now with gruber-hard instead
