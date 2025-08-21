@@ -15,3 +15,9 @@
 	gpgsign = true
 [init]
 	defaultBranch = main
+[core]
+	whitespace = trailing-space,space-before-tab
+[color "diff"]
+	whitespace = red reverse
+[diff]
+	wsErrorHighlight = all
