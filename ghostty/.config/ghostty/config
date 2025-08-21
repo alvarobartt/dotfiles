@@ -11,9 +11,6 @@ window-height = 47
 window-width = 206
 
 font-family = Iosevka Fixed
-# Maybe I can work with IBM Plex Mono if I manage to reduce
-# the inter-word spacing eventually
-# font-family = IBM Plex Mono
 
 font-style = Light
 font-style-bold = Regular
