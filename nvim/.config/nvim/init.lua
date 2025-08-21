@@ -120,8 +120,10 @@ vim.keymap.set("n", "<leader>gg", "<cmd>:LazyGit<CR>", { silent = true })
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(ev)
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
-    if client.name == "rust_analyzer" then
-      client.server_capabilities.semanticTokensProvider = nil
+    if client then
+      if client.name == "rust_analyzer" then
+        client.server_capabilities.semanticTokensProvider = nil
+      end
     end
   end,
 })
@@ -133,7 +135,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- jump to last edit position on opening file
 vim.api.nvim_create_autocmd("BufReadPost", {
   pattern = "*",
-  callback = function(ev)
+  callback = function(_)
     if vim.fn.line("'\"") > 1 and vim.fn.line("'\"") <= vim.fn.line("$") then
       -- except for in git commit messages
       -- https://stackoverflow.com/questions/31449496/vim-ignore-specifc-file-in-autocommand
