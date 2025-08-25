@@ -298,9 +298,11 @@ require("lazy").setup({
       })
       vim.o.background = "dark"
       vim.cmd([[colorscheme gruber-darker]])
-      -- Set space visualization colors using Gruber Dark palette
       vim.api.nvim_set_hl(0, "Whitespace", { fg = "#2a2a2a", blend = 95 }) -- Extremely subtle for normal spaces
       vim.api.nvim_set_hl(0, "TrailingWhitespace", { bg = "#f43841" })     -- Red background for trailing spaces
+      -- Enable cursorline for CursorLineNr highlighting to work
+      vim.opt.cursorline = true
+      vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#ffdd33" }) -- Yellow for current line number
     end,
   },
   -- previously I was using this but let's try now with gruber-hard instead
