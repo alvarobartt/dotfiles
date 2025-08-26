@@ -143,7 +143,7 @@ if [ -d "$HOME/.pyenv" ]; then
 fi
 
 # Install uv using its installer via curl if not already installed
-if ! command -v uv &> /dev/null; then 
+if ! command -v uv &> /dev/null; then
     echo "Installing uv..."
     curl -LsSf https://astral.sh/uv/install.sh | sh
     source $HOME/.local/bin/env
@@ -163,7 +163,7 @@ if [ ! -d "$VENV_DIR" ]; then
     echo "Creating virtual environment with Python 3.12..."
     uv venv $HOME/.venv --python 3.12
     source $HOME/.venv/bin/activate
-else 
+else
     echo "Virtual environment already exists."
 fi
 
