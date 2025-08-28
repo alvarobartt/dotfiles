@@ -353,6 +353,8 @@ require("lazy").setup({
             "--hidden",
             "--glob",
             "!**/.git/*",
+            "--glob",
+            "!**/.venv/*",
           },
         },
         pickers = {
@@ -363,6 +365,8 @@ require("lazy").setup({
               "--hidden",
               "--glob",
               "!**/.git/*",
+              "--glob",
+              "!**/.venv/*",
             },
           },
           live_grep = {
