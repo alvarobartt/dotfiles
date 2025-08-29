@@ -257,6 +257,15 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     })
   end
 })
+--- set autoformatting on file save for json with jq
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.json",
+  callback = function()
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    vim.cmd("%!jq --indent 2 .")
+    pcall(vim.api.nvim_win_set_cursor, 0, { row, col })
+  end,
+})
 --- create directory when creating file (if not created already)
 vim.api.nvim_create_autocmd("BufWritePre", {
   group = vim.api.nvim_create_augroup("auto_create_dir", { clear = true }),
