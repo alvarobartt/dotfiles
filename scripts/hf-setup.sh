@@ -188,6 +188,10 @@ echo "Installing rust-analyzer..."
 rustup component add rust-analyzer
 echo "Installing sd (sed replacement)"
 cargo install sd
+# NOTE: not included by default, but I use it quite often so here in case I change
+# my mind and want to add it within my defaults
+# echo "Installing viu (terminal image viewer)"
+# cargo install viu
 
 # Install Node.js and npm (required for some LazyVim plugins)
 if ! command -v node &> /dev/null; then
