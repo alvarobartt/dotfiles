@@ -680,7 +680,7 @@ require("lazy").setup({
                 name = "ruff"
               })
               vim.lsp.buf.code_action({
-                context = { only = { "source.organizeImports" } },
+                context = { diagnostics = {}, only = { "source.organizeImports" } },
                 apply = true,
               })
             end,
@@ -691,6 +691,11 @@ require("lazy").setup({
             organizeImports = true,
           },
         },
+        capabilities = {
+          general = {
+            positionEncodings = { "utf-16" }
+          },
+        }
       })
 
       -- Rust
