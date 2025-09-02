@@ -13,9 +13,9 @@ window-width = 206
 font-family = Iosevka Fixed
 
 font-style = Light
-font-style-bold = Regular
+font-style-bold = Medium
 font-style-italic = Light
-font-style-bold-italic = Regular
+font-style-bold-italic = Medium
 
-font-size = 22.0
+font-size = 28.0
 font-feature = -zero
