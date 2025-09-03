@@ -340,6 +340,9 @@ require("lazy").setup({
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
+    config = function()
+      vim.g.lazygit_config_file_path = vim.fn.expand("~/.config/lazygit/config.yaml")
+    end,
   },
   -- telescope
   {
