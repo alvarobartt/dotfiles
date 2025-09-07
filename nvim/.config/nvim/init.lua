@@ -167,6 +167,13 @@ vim.api.nvim_create_autocmd("FileType", {
     end)
   end,
 })
+-- Exclude LSP hover windows from trailing whitespace highlighting
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "lspinfo", "help" },
+  callback = function()
+    vim.fn.clearmatches()
+  end,
+})
 -- handle files without filetype (plain text files like config files)
 vim.api.nvim_create_autocmd("BufWinEnter", {
   callback = function()
@@ -732,6 +739,20 @@ require("lazy").setup({
         },
       })
 
+      -- C language server (clangd)
+      lspconfig.clangd.setup({
+        filetypes = { "c", "cpp", "objc", "objcpp" },
+        cmd = { "clangd", "--background-index", "--clang-tidy", "--header-insertion=iwyu" },
+        on_attach = function(client, bufnr)
+          -- Disable formatting capabilities to prevent auto-formatting
+          client.server_capabilities.documentFormattingProvider = false
+          client.server_capabilities.documentRangeFormattingProvider = false
+        end,
+        capabilities = {
+          offsetEncoding = { "utf-16" },
+        },
+      })
+
       -- Global mappings.
       vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float)
       vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
@@ -754,6 +775,13 @@ require("lazy").setup({
           vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
           vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
           vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+          -- Add M binding for man pages in C files
+          if vim.bo.filetype == "c" then
+            vim.keymap.set("n", "M", function()
+              local word = vim.fn.expand("<cword>")
+              vim.cmd("Man " .. word)
+            end, opts)
+          end
           vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
           vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
           vim.keymap.set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts)
@@ -837,6 +865,7 @@ require("lazy").setup({
         "typescript-language-server",
         "lua-language-server",
         "shfmt",
+        "clangd",
       },
       automatic_installation = true,
     },
