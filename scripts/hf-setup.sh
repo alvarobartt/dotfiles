@@ -113,6 +113,11 @@ chmod 600 ~/.ssh/id_ed25519
 chmod 644 ~/.ssh/id_ed25519.pub
 chmod 600 ~/.ssh/config
 
+# Copy Ghostty TERMINFO from local machine (ignore warnings about older tic versions)
+# https://ghostty.org/docs/help/terminfo#copy-ghostty's-terminfo-to-a-remote-machine
+echo "Setting up Ghostty TERMINFO..."
+infocmp -x xterm-ghostty 2>/dev/null | tic -x - 2>/dev/null
+
 # TODO(gpg): Temporarily remove until fully fixed
 # # Set correct permissions for GPG key
 # chmod 600 ~/hf-sign-priv.asc
