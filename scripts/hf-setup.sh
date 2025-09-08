@@ -143,6 +143,13 @@ install_package git-lfs
 # Finally, install `build-essential` to install the `gcc` toolchain required for
 # `rustc` if not installed already
 install_package build-essential
+# And `libssl-dev` and `pkg-config` as required by OpenSSL
+install_package libssl-dev
+install_package pkg-config
+
+# Optionally, also install `protobuf-compiler` which is a dependency I require
+# somewhat frequently when working with gRPC
+install_package protobuf-compiler
 
 # Remove pyenv if it exists
 if [ -d "$HOME/.pyenv" ]; then
