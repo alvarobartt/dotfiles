@@ -140,6 +140,10 @@ install_package fd-find
 # Also install git-lfs required when working with Hugging Face Hub repositories
 install_package git-lfs
 
+# Finally, install `build-essential` to install the `gcc` toolchain required for
+# `rustc` if not installed already
+install_package build-essential
+
 # Remove pyenv if it exists
 if [ -d "$HOME/.pyenv" ]; then
     echo "Removing pyenv..."
