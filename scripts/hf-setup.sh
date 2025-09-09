@@ -151,6 +151,9 @@ install_package pkg-config
 # somewhat frequently when working with gRPC
 install_package protobuf-compiler
 
+# Also install `cmake` which is required for building some packages from source
+install_package cmake
+
 # Remove pyenv if it exists
 if [ -d "$HOME/.pyenv" ]; then
     echo "Removing pyenv..."
@@ -229,7 +232,7 @@ fi
 # Install LazyGit
 if ! command -v lazygit &> /dev/null; then
     echo "Installing LazyGit..."
-    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | rg -Po '"tag_name": "v\K[^"]*')
     curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
     tar xf lazygit.tar.gz lazygit
     sudo install lazygit /usr/local/bin
