@@ -6,7 +6,7 @@
   "gruber-darker.nvim": { "branch": "main", "commit": "b22e1bbf06dd604d7d3483823d63103b86ebe942" },
   "lazy.nvim": { "branch": "main", "commit": "6c3bda4aca61a13a9c63f1c1d1b16b9d3be90d7a" },
   "lazygit.nvim": { "branch": "main", "commit": "0a1ec57f91ecc9c5e97fb26edb2574cf8b13c7cc" },
-  "leap.nvim": { "branch": "main", "commit": "c4a215acef90749851d85ddba08bc282867b50eb" },
+  "leap.nvim": { "branch": "main", "commit": "657da3f8aa2cb8359ce90e8bc0ed5ca0d9665383" },
   "lightline.vim": { "branch": "master", "commit": "e358557e1a9f9fc860416c8eb2e34c0404078155" },
   "lsp_signature.nvim": { "branch": "master", "commit": "62cadce83aaceed677ffe7a2d6a57141af7131ea" },
   "mason.nvim": { "branch": "main", "commit": "7dc4facca9702f95353d5a1f87daf23d78e31c2a" },
