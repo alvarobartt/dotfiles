@@ -545,7 +545,12 @@ require("lazy").setup({
   {
     "ggandor/leap.nvim",
     config = function()
-      require("leap").create_default_mappings()
+      local leap = require("leap")
+      leap.opts.safe_labels = {}
+      -- Create custom mappings to avoid conflicts
+      vim.keymap.set({ 'n', 'x', 'o' }, 's', '<Plug>(leap-forward)')
+      vim.keymap.set({ 'n', 'x', 'o' }, 'gs', '<Plug>(leap-backward)')
+      vim.keymap.set({ 'n', 'x', 'o' }, 'gz', '<Plug>(leap-from-window)')
     end,
   },
   -- better %
