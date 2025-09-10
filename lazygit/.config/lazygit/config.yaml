@@ -1,2 +1,5 @@
 git:
   overrideGpg: true
+
+gui:
+  useHunkModeInStagingView: false
