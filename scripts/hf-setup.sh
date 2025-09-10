@@ -225,19 +225,48 @@ if ! command -v node &> /dev/null; then
     sudo apt-get install -y nodejs
 fi
 
-# Install Neovim if not already installed or overwrite existing installation
+# Install or update Neovim
+INSTALL_NVIM=false
 if ! command -v nvim &> /dev/null; then
-    echo "Installing latest Neovim..."
+    echo "Neovim not found. Installing latest version..."
+    INSTALL_NVIM=true
+else
+    CURRENT_NVIM_VERSION=$(nvim --version | head -n1 | rg -Po 'v\K[0-9]+\.[0-9]+\.[0-9]+')
+    LATEST_NVIM_VERSION=$(curl -s "https://api.github.com/repos/neovim/neovim/releases/latest" | rg -Po '"tag_name": "v\K[^"]*')
+    if [ "$CURRENT_NVIM_VERSION" != "$LATEST_NVIM_VERSION" ]; then
+        echo "Neovim version $CURRENT_NVIM_VERSION found. Latest is $LATEST_NVIM_VERSION. Updating..."
+        INSTALL_NVIM=true
+    else
+        echo "Neovim is up to date (version $CURRENT_NVIM_VERSION)."
+    fi
+fi
+
+if [ "$INSTALL_NVIM" = true ]; then
+    LATEST_NVIM_VERSION=$(curl -s "https://api.github.com/repos/neovim/neovim/releases/latest" | rg -Po '"tag_name": "v\K[^"]*')
     sudo apt remove neovim -y || true
     sudo rm -rf $HOME/neovim || true
     git clone https://github.com/neovim/neovim $HOME/neovim
-    cd $HOME/neovim && git checkout stable && make CMAKE_BUILD_TYPE=RelWithDebInfo && sudo make install
+    cd $HOME/neovim && git checkout "v$LATEST_NVIM_VERSION" && make CMAKE_BUILD_TYPE=RelWithDebInfo && sudo make install
     sudo rm -rf $HOME/neovim
 fi
 
-# Install LazyGit
+# Install or update LazyGit
+INSTALL_LAZYGIT=false
 if ! command -v lazygit &> /dev/null; then
-    echo "Installing LazyGit..."
+    echo "LazyGit not found. Installing latest version..."
+    INSTALL_LAZYGIT=true
+else
+    CURRENT_LAZYGIT_VERSION=$(lazygit --version | rg -Po ', version=\K[0-9]+\.[0-9]+\.[0-9]+')
+    LATEST_LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | rg -Po '"tag_name": "v\K[^"]*')
+    if [ "$CURRENT_LAZYGIT_VERSION" != "$LATEST_LAZYGIT_VERSION" ]; then
+        echo "LazyGit version $CURRENT_LAZYGIT_VERSION found. Latest is $LATEST_LAZYGIT_VERSION. Updating..."
+        INSTALL_LAZYGIT=true
+    else
+        echo "LazyGit is up to date (version $CURRENT_LAZYGIT_VERSION)."
+    fi
+fi
+
+if [ "$INSTALL_LAZYGIT" = true ]; then
     LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | rg -Po '"tag_name": "v\K[^"]*')
     curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
     tar xf lazygit.tar.gz lazygit
