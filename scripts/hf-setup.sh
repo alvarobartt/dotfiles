@@ -245,6 +245,7 @@ if [ "$INSTALL_NVIM" = true ]; then
     LATEST_NVIM_VERSION=$(curl -s "https://api.github.com/repos/neovim/neovim/releases/latest" | rg -Po '"tag_name": "v\K[^"]*')
     sudo apt remove neovim -y || true
     sudo rm -rf $HOME/neovim || true
+    sudo rm -rf $VIMRUNTIME || true
     git clone https://github.com/neovim/neovim $HOME/neovim
     cd $HOME/neovim && git checkout "v$LATEST_NVIM_VERSION" && make CMAKE_BUILD_TYPE=RelWithDebInfo && sudo make install
     sudo rm -rf $HOME/neovim
