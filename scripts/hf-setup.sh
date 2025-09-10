@@ -269,14 +269,14 @@ fi
 if [ "$INSTALL_LAZYGIT" = true ]; then
     LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | rg -Po '"tag_name": "v\K[^"]*')
     curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
-    tar xf lazygit.tar.gz lazygit
+    tar xf lazygit.tar.gz lazygit >/dev/null 2>&1
     sudo install lazygit /usr/local/bin
     sudo rm -rf lazygit lazygit.tar.gz
 fi
 
 # Install LazyVim plugins
 echo "Installing LazyVim plugins..."
-nvim --headless '+Lazy install' '+MasonInstallAll' '+qall'
+nvim --headless '+Lazy install' '+MasonInstallAll' '+qall' >/dev/null 2>&1
 
 # Set up Git configuration
 git config --global init.defaultbranch main
