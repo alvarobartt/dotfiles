@@ -31,6 +31,11 @@ vim.opt.list = false
 -- disable format-on-save from `ziglang/zig.vim`
 vim.g.zig_fmt_parse_errors = 0
 vim.g.zig_fmt_autosave = 0
+-- disable some unused providers failing when `:checkhealth`
+vim.g.loaded_node_provider = 0
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
 -- quick-open
 vim.keymap.set("", "<C-p>", "<cmd>Files<cr>")
 -- search buffers
