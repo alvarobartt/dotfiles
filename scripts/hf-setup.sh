@@ -133,10 +133,6 @@ install_package() {
     fi
 }
 
-# Both ripgrep and fd-find are required for Telescope to work fine
-install_package ripgrep
-install_package fd-find
-
 # Also install git-lfs required when working with Hugging Face Hub repositories
 install_package git-lfs
 
@@ -207,6 +203,16 @@ echo "Installing rust-analyzer..."
 rustup component add rust-analyzer
 echo "Installing sd (sed replacement)"
 cargo install sd
+
+# NOTE: both `rg` and `fd` are required by `telescope.nvim`
+# NOTE: `rg` is required within this build script to grab the latest version of
+# both `nvim` and `lazygit` from GitHub Releases, and `--features pcre2` is to
+# be able to use `rg -Po ...`
+echo "Installing rg (grep replacement)"
+cargo install ripgrep --features pcre2
+echo "Installing fd (find replacement)"
+cargo install fd-find
+
 # NOTE: not included by default, but I use it quite often so here in case I change
 # my mind and want to add it within my defaults
 # echo "Installing viu (terminal image viewer)"
