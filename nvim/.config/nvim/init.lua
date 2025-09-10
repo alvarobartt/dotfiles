@@ -262,9 +262,9 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 --- set autoformatting on file save for zig
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = { "*.zig", "*.zon" },
-  callback = function(ev)
+  callback = function(_)
     vim.lsp.buf.code_action({
-      context = { only = { "source.fixAll" } },
+      context = { diagnostics = {}, only = { "source.fixAll" } },
       apply = true,
     })
   end
@@ -282,7 +282,8 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 vim.api.nvim_create_autocmd("BufWritePre", {
   group = vim.api.nvim_create_augroup("auto_create_dir", { clear = true }),
   callback = function(event)
-    local file = vim.loop.fs_realpath(event.match) or event.match
+    ---@diagnostic disable-next-line: undefined-field
+    local file = vim.uv.fs_realpath(event.match) or event.match
     vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
   end,
 })
@@ -290,7 +291,8 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 -- first, grab the manager
 -- https://github.com/folke/lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+---@diagnostic disable-next-line: undefined-field
+if not vim.uv.fs_stat(lazypath) then
   vim.fn.system({
     "git",
     "clone",
@@ -303,6 +305,17 @@ end
 vim.opt.rtp:prepend(lazypath)
 -- then, setup!
 require("lazy").setup({
+  pkg = {
+    enabled = true,
+    cache = vim.fn.stdpath("state") .. "/lazy/pkg-cache.lua",
+    -- the first package source that is found for a plugin will be used
+    sources = { "lazy" },
+  },
+  rocks = {
+    -- disable rockspec
+    enabled = false,
+    hererocks = false,
+  },
   -- main color scheme
   {
     "blazkowolf/gruber-darker.nvim",
@@ -510,7 +523,7 @@ require("lazy").setup({
           filename = "LightlineFilename",
         },
       }
-      function LightlineFilenameInLua(opts)
+      function LightlineFilenameInLua(_)
         if vim.fn.expand("%:t") == "" then
           return "[No Name]"
         else
@@ -518,14 +531,13 @@ require("lazy").setup({
         end
       end
 
-      -- https://github.com/itchyny/lightline.vim/issues/657
-      vim.api.nvim_exec(
+      vim.api.nvim_exec2(
         [[
-				function! g:LightlineFilename()
-					return v:lua.LightlineFilenameInLua()
-				endfunction
-				]],
-        true
+    function! g:LightlineFilename()
+      return v:lua.LightlineFilenameInLua()
+    endfunction
+  ]],
+        { output = false }
       )
     end,
   },
@@ -582,7 +594,7 @@ require("lazy").setup({
         filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
         -- to be installed as `npm install -g typescript typescript-language-server`
         cmd = { "typescript-language-server", "--stdio" },
-        on_attach = function(client, bufnr)
+        on_attach = function(_, bufnr)
           -- disable ts_ls's formatting if you use another tool like prettier.
           -- client.server_capabilities.documentFormattingProvider = false
 
@@ -600,7 +612,7 @@ require("lazy").setup({
       -- Docker language server
       lspconfig.dockerls.setup({
         filetypes = { "dockerfile" },
-        on_attach = function(client, bufnr)
+        on_attach = function(client, _)
           -- Enable formatting
           client.server_capabilities.documentFormattingProvider = true
         end,
@@ -748,7 +760,7 @@ require("lazy").setup({
       lspconfig.clangd.setup({
         filetypes = { "c", "cpp", "objc", "objcpp" },
         cmd = { "clangd", "--background-index", "--clang-tidy", "--header-insertion=iwyu" },
-        on_attach = function(client, bufnr)
+        on_attach = function(client, _)
           -- Disable formatting capabilities to prevent auto-formatting
           client.server_capabilities.documentFormattingProvider = false
           client.server_capabilities.documentRangeFormattingProvider = false
@@ -760,8 +772,8 @@ require("lazy").setup({
 
       -- Global mappings.
       vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float)
-      vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
-      vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
+      vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end)
+      vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end)
       vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist)
 
       -- apply code actions if any
@@ -886,7 +898,7 @@ require("lazy").setup({
     "ray-x/lsp_signature.nvim",
     event = "VeryLazy",
     opts = {},
-    config = function(_, opts)
+    config = function(_, _)
       -- Get signatures (and _only_ signatures) when in argument lists.
       require("lsp_signature").setup({
         doc_lines = 0,
