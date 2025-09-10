@@ -305,17 +305,8 @@ end
 vim.opt.rtp:prepend(lazypath)
 -- then, setup!
 require("lazy").setup({
-  pkg = {
-    enabled = true,
-    cache = vim.fn.stdpath("state") .. "/lazy/pkg-cache.lua",
-    -- the first package source that is found for a plugin will be used
-    sources = { "lazy" },
-  },
-  rocks = {
-    -- disable rockspec
-    enabled = false,
-    hererocks = false,
-  },
+  -- disable luarocks i.e., rockspec
+  rocks = { enabled = false },
   -- main color scheme
   {
     "blazkowolf/gruber-darker.nvim",
