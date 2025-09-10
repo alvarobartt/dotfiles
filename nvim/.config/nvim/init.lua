@@ -135,7 +135,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 -- highlight yanked text
 vim.api.nvim_create_autocmd("TextYankPost", {
   pattern = "*",
-  command = "silent! lua vim.highlight.on_yank({ timeout = 500 })",
+  command = "silent! lua vim.hl.on_yank({ timeout = 500 })",
 })
 -- jump to last edit position on opening file
 vim.api.nvim_create_autocmd("BufReadPost", {
