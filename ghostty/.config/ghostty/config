@@ -19,3 +19,5 @@ font-style-bold-italic = Medium
 
 font-size = 28.0
 font-feature = -zero
+
+keybind = alt+backspace=text:\x1b\x7f
