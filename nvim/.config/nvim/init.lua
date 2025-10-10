@@ -756,19 +756,19 @@ require("lazy").setup({
         },
       })
 
-      -- C language server (clangd)
-      lspconfig.clangd.setup({
-        filetypes = { "c", "cpp", "objc", "objcpp" },
-        cmd = { "clangd", "--background-index", "--clang-tidy", "--header-insertion=iwyu" },
-        on_attach = function(client, _)
-          -- Disable formatting capabilities to prevent auto-formatting
-          client.server_capabilities.documentFormattingProvider = false
-          client.server_capabilities.documentRangeFormattingProvider = false
-        end,
-        capabilities = {
-          offsetEncoding = { "utf-16" },
-        },
-      })
+      -- -- C language server (clangd)
+      -- lspconfig.clangd.setup({
+      --   filetypes = { "c", "cpp", "objc", "objcpp" },
+      --   cmd = { "clangd", "--background-index", "--clang-tidy", "--header-insertion=iwyu" },
+      --   on_attach = function(client, _)
+      --     -- Disable formatting capabilities to prevent auto-formatting
+      --     client.server_capabilities.documentFormattingProvider = false
+      --     client.server_capabilities.documentRangeFormattingProvider = false
+      --   end,
+      --   capabilities = {
+      --     offsetEncoding = { "utf-16" },
+      --   },
+      -- })
 
       -- Global mappings.
       vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float)
@@ -882,7 +882,7 @@ require("lazy").setup({
         "typescript-language-server",
         "lua-language-server",
         "shfmt",
-        "clangd",
+        -- "clangd",
       },
       automatic_installation = true,
     },
