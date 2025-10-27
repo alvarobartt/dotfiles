@@ -11,6 +11,7 @@ vim.opt.number = true
 -- more is annoying as it takes too much space
 -- less is not recommended given that most of the files might contain > 100 lines
 vim.opt.numberwidth = 3
+vim.opt.fillchars = { eob = " " }
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.undofile = true
