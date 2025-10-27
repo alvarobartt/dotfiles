@@ -502,8 +502,10 @@ require("lazy").setup({
     config = function()
       -- no need to also show mode in cmd line when we have bar
       vim.o.showmode = false
-      -- minimize command line height to reduce bottom spacing
-      vim.o.cmdheight = 0
+      -- NOTE: yes, `vim.o.cmdheight = 0` is minimal, but given that it hides the
+      -- output of commands as e.g. `:w` it makes it really annoying as `nvim` displays
+      -- the message for the user to ack to avoid missing critical information
+      vim.o.cmdheight = 1
       -- ensure status line is always shown and at bottom
       vim.o.laststatus = 3
       vim.g.lightline = {
