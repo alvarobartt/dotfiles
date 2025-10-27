@@ -592,6 +592,7 @@ require("lazy").setup({
           }
         }
       }
+      vim.lsp.enable('zls')
 
       -- you may never seen me actually coding in ts, but let's keep it here
       -- because I may eventually need it here and there
@@ -613,6 +614,7 @@ require("lazy").setup({
           })
         end,
       }
+      vim.lsp.enable('ts_ls')
 
       -- Docker language server
       vim.lsp.config.dockerls = {
@@ -624,6 +626,7 @@ require("lazy").setup({
           client.server_capabilities.documentFormattingProvider = true
         end,
       }
+      vim.lsp.enable('dockerls')
 
       -- -- YAML language server
       -- TODO: at the moment all the default LSPs are disabled, but this should
@@ -660,12 +663,14 @@ require("lazy").setup({
           }
         }
       }
+      vim.lsp.enable('helm_ls')
 
       vim.lsp.config.yamlls = {
         cmd = { "yaml-language-server", "--stdio" },
         filetypes = { "yaml", "yaml.docker-compose", "yaml.gitlab" },
         root_markers = { ".git" },
       }
+      vim.lsp.enable('yamlls')
 
       -- lua lsp
       vim.lsp.config.lua_ls = {
@@ -706,6 +711,7 @@ require("lazy").setup({
           }
         }
       }
+      vim.lsp.enable('lua_ls')
 
       -- PyRight LSP
       vim.lsp.config.pyright = {
@@ -713,6 +719,7 @@ require("lazy").setup({
         filetypes = { "python" },
         root_markers = { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile", "pyrightconfig.json", ".git" },
       }
+      vim.lsp.enable('pyright')
 
       -- Ruff LSP
       vim.lsp.config.ruff = {
@@ -749,6 +756,7 @@ require("lazy").setup({
           },
         }
       }
+      vim.lsp.enable('ruff')
 
       -- Rust
       vim.lsp.config.rust_analyzer = {
@@ -773,6 +781,7 @@ require("lazy").setup({
           },
         },
       }
+      vim.lsp.enable('rust_analyzer')
 
       -- Bash LSP
       vim.lsp.config.bashls = {
@@ -785,6 +794,7 @@ require("lazy").setup({
           },
         },
       }
+      vim.lsp.enable('bashls')
 
       -- -- C language server (clangd)
       -- lspconfig.clangd.setup({
