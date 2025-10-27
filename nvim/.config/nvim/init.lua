@@ -573,12 +573,11 @@ require("lazy").setup({
   {
     "neovim/nvim-lspconfig",
     config = function()
-      -- Setup language servers.
-      local lspconfig = require("lspconfig")
-
       -- Zig language server
-      lspconfig.zls.setup {
-        -- cmd = { '~/zls/zls' },
+      vim.lsp.config.zls = {
+        cmd = { 'zls' },
+        filetypes = { 'zig', 'zir' },
+        root_markers = { 'build.zig', '.git' },
         settings = {
           zls = {
             -- Further information about build-on save:
@@ -590,10 +589,10 @@ require("lazy").setup({
 
       -- you may never seen me actually coding in ts, but let's keep it here
       -- because I may eventually need it here and there
-      lspconfig.ts_ls.setup({
-        filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
-        -- to be installed as `npm install -g typescript typescript-language-server`
+      vim.lsp.config.ts_ls = {
         cmd = { "typescript-language-server", "--stdio" },
+        filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
+        root_markers = { "package.json", "tsconfig.json", ".git" },
         on_attach = function(_, bufnr)
           -- disable ts_ls's formatting if you use another tool like prettier.
           -- client.server_capabilities.documentFormattingProvider = false
@@ -607,16 +606,18 @@ require("lazy").setup({
             end,
           })
         end,
-      })
+      }
 
       -- Docker language server
-      lspconfig.dockerls.setup({
+      vim.lsp.config.dockerls = {
+        cmd = { "docker-langserver", "--stdio" },
         filetypes = { "dockerfile" },
+        root_markers = { "Dockerfile", ".git" },
         on_attach = function(client, _)
           -- Enable formatting
           client.server_capabilities.documentFormattingProvider = true
         end,
-      })
+      }
 
       -- -- YAML language server
       -- TODO: at the moment all the default LSPs are disabled, but this should
@@ -641,7 +642,10 @@ require("lazy").setup({
       -- })
 
       -- helm support (?)
-      lspconfig.helm_ls.setup {
+      vim.lsp.config.helm_ls = {
+        cmd = { "helm_ls", "serve" },
+        filetypes = { "helm" },
+        root_markers = { "Chart.yaml", ".git" },
         settings = {
           ["helm-ls"] = {
             yamlls = {
@@ -650,10 +654,18 @@ require("lazy").setup({
           }
         }
       }
-      lspconfig.yamlls.setup({})
+
+      vim.lsp.config.yamlls = {
+        cmd = { "yaml-language-server", "--stdio" },
+        filetypes = { "yaml", "yaml.docker-compose", "yaml.gitlab" },
+        root_markers = { ".git" },
+      }
 
       -- lua lsp
-      lspconfig.lua_ls.setup({
+      vim.lsp.config.lua_ls = {
+        cmd = { "lua-language-server" },
+        filetypes = { "lua" },
+        root_markers = { ".luarc.json", ".luarc.jsonc", ".luacheckrc", ".stylua.toml", "stylua.toml", "selene.toml", "selene.yml", ".git" },
         on_init = function(client)
           client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
             runtime = {
@@ -687,13 +699,20 @@ require("lazy").setup({
             -- diagnostics = { enable = false }
           }
         }
-      })
+      }
 
       -- PyRight LSP
-      lspconfig.pyright.setup({})
+      vim.lsp.config.pyright = {
+        cmd = { "pyright-langserver", "--stdio" },
+        filetypes = { "python" },
+        root_markers = { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile", "pyrightconfig.json", ".git" },
+      }
 
       -- Ruff LSP
-      lspconfig.ruff.setup({
+      vim.lsp.config.ruff = {
+        cmd = { "ruff", "server", "--preview" },
+        filetypes = { "python" },
+        root_markers = { "pyproject.toml", "ruff.toml", ".ruff.toml", ".git" },
         on_attach = function(client, bufnr)
           -- Disable hover in favor of Pyright
           client.server_capabilities.hoverProvider = false
@@ -723,10 +742,13 @@ require("lazy").setup({
             positionEncodings = { "utf-16" }
           },
         }
-      })
+      }
 
       -- Rust
-      lspconfig.rust_analyzer.setup({
+      vim.lsp.config.rust_analyzer = {
+        cmd = { "rust-analyzer" },
+        filetypes = { "rust" },
+        root_markers = { "Cargo.toml", "rust-project.json", ".git" },
         settings = {
           ["rust-analyzer"] = {
             cargo = {
@@ -744,17 +766,19 @@ require("lazy").setup({
             },
           },
         },
-      })
+      }
 
       -- Bash LSP
-      lspconfig.bashls.setup({
+      vim.lsp.config.bashls = {
+        cmd = { "bash-language-server", "start" },
         filetypes = { "sh" },
+        root_markers = { ".git" },
         settings = {
           bashIde = {
             shellcheckPath = "",
           },
         },
-      })
+      }
 
       -- -- C language server (clangd)
       -- lspconfig.clangd.setup({
