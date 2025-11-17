@@ -382,6 +382,8 @@ require("lazy").setup({
             "--line-number",
             "--column",
             "--smart-case",
+            -- Leaving this here commented, as I use might switch to it from time to time
+            -- "--case-sensitive",
             "--hidden",
             "--glob",
             "!**/.git/*",
