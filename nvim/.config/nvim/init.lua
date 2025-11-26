@@ -327,6 +327,7 @@ require("lazy").setup({
       })
       vim.o.background = "dark"
       vim.cmd([[colorscheme gruber-darker]])
+
       vim.api.nvim_set_hl(0, "Whitespace", { fg = "#2a2a2a", blend = 95 }) -- Extremely subtle for normal spaces
       vim.api.nvim_set_hl(0, "TrailingWhitespace", { bg = "#f43841" })     -- Red background for trailing spaces
       -- Enable cursorline for CursorLineNr highlighting to work
@@ -564,6 +565,13 @@ require("lazy").setup({
       vim.g.matchup_surround_enabled = 0
       vim.g.matchup_matchparen_deferred = 1
       vim.g.matchup_matchparen_hi_surround_always = 0
+      -- Disable word matching for C files to prevent function/return highlighting
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "c",
+        callback = function()
+          vim.b.matchup_matchparen_enabled = 0
+        end,
+      })
     end,
   },
   -- auto-cd to root of git project
