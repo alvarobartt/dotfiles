@@ -291,6 +291,15 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
   end,
 })
+--- convert tabs to spaces on save
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*",
+  callback = function()
+    local save_cursor = vim.fn.getpos(".")
+    vim.cmd("%s/\\t/    /ge")
+    vim.fn.setpos(".", save_cursor)
+  end,
+})
 
 -- first, grab the manager
 -- https://github.com/folke/lazy.nvim
