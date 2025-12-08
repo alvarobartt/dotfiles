@@ -30,9 +30,9 @@ set -g fish_color_valid_path --underline
 #     set_color blue
 #     if [ $PWD != $HOME ]
 #         set_color brblack
-#     	echo -n ':'
-#     	set_color yellow
-#     	echo -n (basename $PWD)
+#         echo -n ':'
+#         set_color yellow
+#         echo -n (basename $PWD)
 #     end
 #     set_color green
 #     printf '%s ' (__fish_git_prompt)
@@ -49,6 +49,9 @@ starship init fish | source
 
 # Rust configuration
 set --export PATH $HOME/.cargo/bin $PATH
+if test -d $HOME/.cargo-target
+    set -gx CARGO_TARGET_DIR $HOME/.cargo-target
+end
 
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
