@@ -291,10 +291,14 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
   end,
 })
---- convert tabs to spaces on save
+--- convert tabs to spaces on save (except for Makefiles)
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*",
   callback = function()
+    -- Skip conversion for Makefiles which require tabs
+    if vim.bo.filetype == "make" or vim.fn.expand("%:t"):match("^[Mm]akefile") then
+      return
+    end
     local save_cursor = vim.fn.getpos(".")
     vim.cmd("%s/\\t/    /ge")
     vim.fn.setpos(".", save_cursor)
