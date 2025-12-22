@@ -432,7 +432,6 @@ require("lazy").setup({
   -- neotree
   {
     "nvim-neo-tree/neo-tree.nvim",
-    branch = "v3.x",
     dependencies = {
       "nvim-lua/plenary.nvim",
       -- disable the freaking ugly nerd icons
@@ -1054,7 +1053,6 @@ require("lazy").setup({
     dependencies = {
       "nvim-lua/plenary.nvim", -- required for git operations
     },
-    branch = "main",
     config = function()
       require("claude-code").setup({})
       vim.keymap.set("n", "<leader>cc", "<cmd>ClaudeCode<cr>", { desc = "Claude Code Command" })
