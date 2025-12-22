@@ -447,6 +447,10 @@ require("lazy").setup({
             enabled = true,
           },
           hijack_netrw_behavior = "open_default",
+          window = {
+            width = 35,
+            auto_expand_width = false,
+          }
         },
       })
       vim.keymap.set("n", "<leader>fe", "<cmd>Neotree toggle<cr>", { desc = "Toggle Explorer" })
