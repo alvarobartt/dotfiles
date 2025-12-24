@@ -175,7 +175,7 @@ vim.api.nvim_create_autocmd("Filetype", {
     vim.opt_local.spell = true
   end,
 })
---- set line length limit for Python files
+-- set line length limit for Python files
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "python",
   callback = function()
@@ -551,11 +551,19 @@ require("lazy").setup({
       vim.g.matchup_surround_enabled = 0
       vim.g.matchup_matchparen_deferred = 1
       vim.g.matchup_matchparen_hi_surround_always = 0
-      -- Disable word matching for C files to prevent function/return highlighting
+      -- disable word matching for c, to prevent function/return highlighting
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "c",
         callback = function()
           vim.b.matchup_matchparen_enabled = 0
+        end,
+      })
+      -- disable for markdown, slows down opening files via telescope
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "markdown" },
+        callback = function()
+          vim.b.matchup_matchparen_enabled = 0
+          vim.b.matchup_motion_enabled = 0
         end,
       })
     end,
