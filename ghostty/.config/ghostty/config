@@ -11,20 +11,11 @@ window-padding-balance = true
 window-height = 47
 window-width = 206
 
-# font-family = Iosevka Fixed
-# font-style = Light
-# font-style-bold = Medium
-# font-style-italic = Light
-# font-style-bold-italic = Medium
-# font-size = 28.0
-# font-feature = -zero
-
 font-family = Berkeley Mono
-font-style = SemiLight Condensed
-font-style-bold = Condensed
-font-style-italic = SemiLight Condensed
-font-style-bold-italic = Condensed
+font-style = Light Condensed
+font-style-bold = SemiLight Condensed
+font-style-italic = Light Condensed
+font-style-bold-italic = SemiLight Condensed
 font-size = 20.0
-font-feature = -zero
 
 keybind = alt+backspace=text:\x1b\x7f
