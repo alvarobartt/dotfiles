@@ -1021,48 +1021,4 @@ require("lazy").setup({
       vim.g.vim_markdown_auto_insert_bullets = 0
     end,
   },
-  -- zen mode
-  {
-    "folke/zen-mode.nvim",
-    opts = {
-      plugins = {
-        -- disable some global vim options (vim.o...)
-        -- comment the lines to not apply the options
-        options = {
-          enabled = true,
-          ruler = false,   -- disables the ruler text in the cmd line area
-          showcmd = false, -- disables the command in the last line of the screen
-          -- you may turn on/off statusline in zen mode by setting 'laststatus'
-          -- statusline will be shown only if 'laststatus' == 3
-          laststatus = 0, -- turn off the statusline in zen mode
-        },
-        -- this will change the font size on kitty when in zen mode
-        -- to make this work, you need to set the following kitty options:
-        -- - allow_remote_control socket-only
-        -- - listen_on unix:/tmp/kitty
-        -- kitty = {
-        --   enabled = true,
-        --   font = "+4", -- font size increment
-        -- },
-      },
-    }
-  },
-  -- claude-code.nvim
-  {
-    "greggh/claude-code.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim", -- required for git operations
-    },
-    config = function()
-      require("claude-code").setup({})
-      vim.keymap.set("n", "<leader>cc", "<cmd>ClaudeCode<cr>", { desc = "Claude Code Command" })
-    end,
-  },
-  -- (not stable) typr i.e. like a monkey type experience but on terminal
-  -- {
-  --   "nvzone/typr",
-  --   dependencies = "nvzone/volt",
-  --   opts = {},
-  --   cmd = { "Typr", "TyprStats" },
-  -- }
 })
