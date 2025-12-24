@@ -974,7 +974,7 @@ require("lazy").setup({
   "khaveesh/vim-fish-syntax",
   -- markdown
   {
-    "plasticboy/vim-markdown",
+    "preservim/vim-markdown",
     ft = { "markdown" },
     dependencies = {
       "godlygeek/tabular",
@@ -989,6 +989,8 @@ require("lazy").setup({
       -- don't add bullets when wrapping:
       -- https://github.com/preservim/vim-markdown/issues/232
       vim.g.vim_markdown_auto_insert_bullets = 0
+      -- formatting for tables
+      vim.g.vim_markdown_borderless_table = 1
     end,
   },
 })
