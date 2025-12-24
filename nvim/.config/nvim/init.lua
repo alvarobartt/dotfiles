@@ -41,46 +41,16 @@ vim.g.loaded_python3_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 -- quick-open
-vim.keymap.set("", "<C-p>", "<cmd>Files<cr>")
+vim.keymap.set("", "<C-p>", "<cmd>files<cr>")
 -- search buffers
-vim.keymap.set("n", "<leader>;", "<cmd>Buffers<cr>")
+vim.keymap.set("n", "<leader>;", "<cmd>buffers<cr>")
 -- quick-save
 vim.keymap.set("n", "<leader>w", "<cmd>w<cr>")
 -- make missing : less annoying
 vim.keymap.set("n", ";", ":")
--- Ctrl+j as Esc (ideal to stay within the home row and save left pinkie)
-vim.keymap.set("n", "<C-j>", "<Esc>")
-vim.keymap.set("i", "<C-j>", "<Esc>")
-vim.keymap.set("v", "<C-j>", "<Esc>")
-vim.keymap.set("s", "<C-j>", "<Esc>")
-vim.keymap.set("x", "<C-j>", "<Esc>")
-vim.keymap.set("c", "<C-j>", "<Esc>")
-vim.keymap.set("o", "<C-j>", "<Esc>")
-vim.keymap.set("l", "<C-j>", "<Esc>")
-vim.keymap.set("t", "<C-j>", "<Esc>")
--- Ctrl+k as Esc (ideal to stay within the home row and save left pinkie)
-vim.keymap.set("n", "<C-k>", "<Esc>")
-vim.keymap.set("i", "<C-k>", "<Esc>")
-vim.keymap.set("v", "<C-k>", "<Esc>")
-vim.keymap.set("s", "<C-k>", "<Esc>")
-vim.keymap.set("x", "<C-k>", "<Esc>")
-vim.keymap.set("c", "<C-k>", "<Esc>")
-vim.keymap.set("o", "<C-k>", "<Esc>")
-vim.keymap.set("l", "<C-k>", "<Esc>")
-vim.keymap.set("t", "<C-k>", "<Esc>")
--- Ctrl+h to stop searching
-vim.keymap.set("v", "<C-h>", "<cmd>nohlsearch<cr>")
-vim.keymap.set("n", "<C-h>", "<cmd>nohlsearch<cr>")
--- Jump to start and end of line using the home row keys
-vim.keymap.set("", "H", "^")
-vim.keymap.set("", "L", "$")
--- TODO: not really working as expected, still need to investigate a better copy-paste
--- that works well with MacOS system
--- Neat X clipboard integration
--- <leader>p will paste clipboard into buffer
--- <leader>c will copy entire buffer into clipboard
--- vim.keymap.set('n', '<leader>p', '<cmd>read !wl-paste<cr>')
--- vim.keymap.set('n', '<leader>c', '<cmd>w !wl-copy<cr><cr>')
+-- Ctrl+j as Esc
+vim.keymap.set({ "n", "i", "v" }, "<C-j>", "<Esc>")
+-- copy to clipboard
 vim.keymap.set("v", "<leader>y", ":w !wl-copy<cr><cr>")
 -- <leader>, shows/hides hidden characters
 vim.keymap.set("n", "<leader>,", ":set invlist<cr>")
