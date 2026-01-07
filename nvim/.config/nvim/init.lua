@@ -727,7 +727,7 @@ require("lazy").setup({
 
       -- Ruff LSP
       vim.lsp.config.ruff = {
-        cmd = { "ruff", "server", "--preview" },
+        cmd = { "ruff", "server" },
         filetypes = { "python" },
         root_markers = { "pyproject.toml", "ruff.toml", ".ruff.toml", ".git" },
         on_attach = function(client, bufnr)
