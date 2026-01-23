@@ -49,9 +49,7 @@ starship init fish | source
 
 # Rust configuration
 set --export PATH $HOME/.cargo/bin $PATH
-if test -d $HOME/.cargo-target
-    set -gx CARGO_TARGET_DIR $HOME/.cargo-target
-end
+set -gx CARGO_TARGET_DIR $HOME/.cargo-target
 
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
