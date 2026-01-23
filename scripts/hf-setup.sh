@@ -212,6 +212,8 @@ echo "Installing rg (grep replacement)"
 cargo install ripgrep --features pcre2
 echo "Installing fd (find replacement)"
 cargo install fd-find
+echo "Installing cargo-insta (snapshot testing)"
+cargo install cargo-insta
 
 # NOTE: not included by default, but I use it quite often so here in case I change
 # my mind and want to add it within my defaults
