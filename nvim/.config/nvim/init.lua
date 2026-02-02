@@ -275,6 +275,18 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   end,
 })
 
+-- suppress `leap.nvim` notification warning due to migration to Codeberg
+local function suppress_notifications()
+  local original_notify = vim.notify
+  vim.notify = function(msg, level, opts)
+    if msg:match("leap.nvim: the repository has been moved to Codeberg") then
+      return
+    end
+    original_notify(msg, level, opts)
+  end
+end
+suppress_notifications()
+
 -- first, grab the manager
 -- https://github.com/folke/lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
