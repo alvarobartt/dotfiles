@@ -12,10 +12,10 @@ window-height = 47
 window-width = 206
 
 font-family = Berkeley Mono
-font-style = Light UltraCondensed
-font-style-bold = SemiLight UltraCondensed
-font-style-italic = Light UltraCondensed
-font-style-bold-italic = SemiLight UltraCondensed
+font-style = Light Condensed
+font-style-bold = SemiLight Condensed
+font-style-italic = Light Condensed
+font-style-bold-italic = SemiLight Condensed
 font-size = 20.0
 
 keybind = alt+backspace=text:\x1b\x7f
