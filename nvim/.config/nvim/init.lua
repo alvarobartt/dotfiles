@@ -296,48 +296,30 @@ require("lazy").setup({
   rocks = { enabled = false },
   -- main color scheme
   {
-    "blazkowolf/gruber-darker.nvim",
+    "tinted-theming/tinted-vim",
     lazy = false,    -- load at start
     priority = 1000, -- load first
     config = function()
-      require("gruber-darker").setup({
-        opts = {
-          bold = false,
-          italic = {
-            strings = false,
-          },
-        },
-      })
+      vim.cmd([[colorscheme base16-gruvbox-dark-hard]])
       vim.o.background = "dark"
-      vim.cmd([[colorscheme gruber-darker]])
+      -- Make comments more prominent -- they are important.
+      local bools = vim.api.nvim_get_hl(0, { name = "Boolean" })
+      vim.api.nvim_set_hl(0, "Comment", bools)
+      -- Make it clearly visible which argument we're at.
+      local marked = vim.api.nvim_get_hl(0, { name = "PMenu" })
+      vim.api.nvim_set_hl(
+        0,
+        "LspSignatureActiveParameter",
+        { fg = marked.fg, bg = marked.bg, ctermfg = marked.ctermfg, ctermbg = marked.ctermbg, bold = true }
+      )
 
-      vim.api.nvim_set_hl(0, "Whitespace", { fg = "#2a2a2a", blend = 95 }) -- Extremely subtle for normal spaces
-      vim.api.nvim_set_hl(0, "TrailingWhitespace", { bg = "#f43841" })     -- Red background for trailing spaces
+      vim.api.nvim_set_hl(0, "Whitespace", { fg = "#3c3836", blend = 95 }) -- Subtle for normal spaces (gruvbox bg1)
+      vim.api.nvim_set_hl(0, "TrailingWhitespace", { bg = "#fb4934" })     -- Red background for trailing spaces (gruvbox red)
       -- Enable cursorline for CursorLineNr highlighting to work
       vim.opt.cursorline = true
-      vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#ffdd33" }) -- Yellow for current line number
+      vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#fabd2f" }) -- Yellow for current line number (gruvbox yellow)
     end,
   },
-  -- previously I was using this but let's try now with gruber-hard instead
-  -- {
-  --     "tinted-theming/tinted-vim",
-  --     lazy = false,    -- load at start
-  --     priority = 1000, -- load first
-  --     config = function()
-  --         vim.cmd([[colorscheme base16-gruvbox-dark-hard]])
-  --         vim.o.background = "dark"
-  --         -- Make comments more prominent -- they are important.
-  --         local bools = vim.api.nvim_get_hl(0, { name = "Boolean" })
-  --         vim.api.nvim_set_hl(0, "Comment", bools)
-  --         -- Make it clearly visible which argument we're at.
-  --         local marked = vim.api.nvim_get_hl(0, { name = "PMenu" })
-  --         vim.api.nvim_set_hl(
-  --             0,
-  --             "LspSignatureActiveParameter",
-  --             { fg = marked.fg, bg = marked.bg, ctermfg = marked.ctermfg, ctermbg = marked.ctermbg, bold = true }
-  --         )
-  --     end,
-  -- },
   -- lazygit
   {
     "kdheepak/lazygit.nvim",
@@ -351,7 +333,7 @@ require("lazy").setup({
   -- telescope
   {
     "nvim-telescope/telescope.nvim",
-    tag = "v0.2.0",
+    tag = "v0.2.1",
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
       local telescope = require("telescope")
@@ -533,7 +515,7 @@ require("lazy").setup({
   },
   -- quick navigation
   {
-    "ggandor/leap.nvim",
+    url = "https://codeberg.org/andyg/leap.nvim",
     config = function()
       local leap = require("leap")
       leap.opts.safe_labels = {}
