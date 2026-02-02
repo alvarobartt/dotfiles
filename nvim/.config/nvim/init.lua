@@ -327,6 +327,15 @@ require("lazy").setup({
 
       vim.api.nvim_set_hl(0, "Whitespace", { fg = "#3c3836", blend = 95 }) -- Subtle for normal spaces (gruvbox bg1)
       vim.api.nvim_set_hl(0, "TrailingWhitespace", { bg = "#fb4934" })     -- Red background for trailing spaces (gruvbox red)
+      -- Comment keywords highlighting (from wincent/base16-nvim)
+      vim.api.nvim_set_hl(0, "Todo", { fg = "#fabd2f", bg = "#3c3836" })
+      vim.api.nvim_set_hl(0, "@comment.todo", { fg = "#8ec07c", italic = true })
+      vim.api.nvim_set_hl(0, "@comment.note", { fg = "#83a598", italic = true })
+      vim.api.nvim_set_hl(0, "@comment.warning", { fg = "#fe8019", italic = true })
+      vim.api.nvim_set_hl(0, "@comment.error", { fg = "#fb4934", italic = true })
+      -- Custom highlight for SAFETY keyword (common in Rust)
+      vim.api.nvim_set_hl(0, "CommentSafety", { fg = "#83a598", italic = true })
+      vim.fn.matchadd("CommentSafety", "\\<SAFETY\\>")
       -- Enable cursorline for CursorLineNr highlighting to work
       vim.opt.cursorline = true
       vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#fabd2f" }) -- Yellow for current line number (gruvbox yellow)
