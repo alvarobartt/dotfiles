@@ -24,6 +24,7 @@ vim.opt.expandtab = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.vb = true
+vim.opt.termguicolors = true
 vim.opt.diffopt:append("iwhite")
 vim.opt.diffopt:append("algorithm:histogram")
 vim.opt.diffopt:append("indent-heuristic")
