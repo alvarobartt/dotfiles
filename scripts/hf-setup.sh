@@ -50,6 +50,7 @@ run_remote() {
 
     # Create necessary directories on remote machine and copy files (overwrite existing ones)
     $scp_cmd ~/.config/nvim/init.lua "$USER@$IP:~/.config/nvim/init.lua"
+    $scp_cmd ~/.config/nvim/lazy-lock.json "$USER@$IP:~/.config/nvim/lazy-lock.json"
     $scp_cmd ~/.ssh/id_ed25519 "$USER@$IP:~/.ssh/id_ed25519"
     $scp_cmd ~/.ssh/id_ed25519.pub "$USER@$IP:~/.ssh/id_ed25519.pub"
     $scp_cmd ~/.tmux.conf "$USER@$IP:~/.tmux.conf"
@@ -57,6 +58,13 @@ run_remote() {
     # Also add the GPG key used to sign commits on the Hugging Face Hub
     # TODO(gpg): Temporarily remove until fully fixed
     $scp_cmd ~/hf-sign-priv.asc "$USER@$IP:~/hf-sign-priv.asc"
+
+    # Copy Kitty terminfo to remote
+    # https://sw.kovidgoyal.net/kitty/kittens/ssh/#copying-terminfo-files-manually
+    infocmp -x xterm-kitty 2>/dev/null | $ssh_cmd "$USER@$IP" 'tic -x - 2>/dev/null' || true
+    # Copy Ghostty terminfo to remote
+    # https://ghostty.org/docs/help/terminfo#copy-ghostty's-terminfo-to-a-remote-machine
+    infocmp -x xterm-ghostty 2>/dev/null | $ssh_cmd "$USER@$IP" 'tic -x - 2>/dev/null' || true
 
     # Run the setup script with an updated PATH
     $ssh_cmd "$USER@$IP" 'PATH=\$PATH:/usr/bin:/bin:/usr/local/bin bash -s' <<EOF
@@ -112,11 +120,6 @@ fi
 chmod 600 ~/.ssh/id_ed25519
 chmod 644 ~/.ssh/id_ed25519.pub
 chmod 600 ~/.ssh/config
-
-# Copy Ghostty TERMINFO from local machine (ignore warnings about older tic versions)
-# https://ghostty.org/docs/help/terminfo#copy-ghostty's-terminfo-to-a-remote-machine
-echo "Setting up Ghostty TERMINFO..."
-infocmp -x xterm-ghostty 2>/dev/null | tic -x - 2>/dev/null
 
 # TODO(gpg): Temporarily remove until fully fixed
 # # Set correct permissions for GPG key
