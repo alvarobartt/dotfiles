@@ -275,32 +275,16 @@ fi
 if [ "$INSTALL_LAZYGIT" = true ]; then
     LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | rg -Po '"tag_name": "v\K[^"]*')
 
-    # Retry download with timeout and fallback
-    DOWNLOAD_SUCCESS=false
-    for attempt in 1 2 3; do
-        echo "Downloading LazyGit (attempt $attempt/3)..."
-        if curl --max-time 5 -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"; then
-            # Verify the download succeeded by checking if tar file is valid
-            if tar -tf lazygit.tar.gz >/dev/null 2>&1; then
-                DOWNLOAD_SUCCESS=true
-                break
-            else
-                echo "Downloaded file appears corrupted, retrying..."
-                rm -f lazygit.tar.gz
-            fi
-        else
-            echo "Download failed, retrying..."
-        fi
-        sleep 5
-    done
-
-    if [ "$DOWNLOAD_SUCCESS" = true ]; then
-        tar xf lazygit.tar.gz lazygit >/dev/null 2>&1
+    echo "Downloading LazyGit v${LAZYGIT_VERSION}..."
+    if curl --retry 5 --retry-delay 3 --max-time 120 -fSLo lazygit.tar.gz \
+        "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"; then
+        tar xf lazygit.tar.gz lazygit
         sudo install lazygit /usr/local/bin
-        sudo rm -rf lazygit lazygit.tar.gz
+        rm -f lazygit lazygit.tar.gz
         echo "LazyGit installed successfully."
     else
-        echo "Warning: Failed to download LazyGit after 3 attempts. Skipping LazyGit installation."
+        echo "Warning: Failed to download LazyGit. Skipping LazyGit installation."
+        rm -f lazygit.tar.gz
     fi
 fi
 
