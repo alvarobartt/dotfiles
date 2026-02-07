@@ -352,55 +352,52 @@ require("lazy").setup({
       vim.g.lazygit_config_file_path = vim.fn.expand("~/.config/lazygit/config.yaml")
     end,
   },
-  -- telescope
+  -- fzf-lua
   {
-    "nvim-telescope/telescope.nvim",
-    tag = "v0.2.1",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    "ibhagwan/fzf-lua",
     config = function()
-      local telescope = require("telescope")
-      telescope.setup({
-        defaults = {
-          disable_devicons = true,
-          vimgrep_arguments = {
-            "rg",
+      local fzf = require("fzf-lua")
+      fzf.setup({
+        winopts = {
+          height = 0.85,
+          width = 0.80,
+          preview = {
+            hidden = true,
+          },
+        },
+        files = {
+          file_icons = false,
+          git_icons = false,
+          _fzf_nth_devicons = true,
+        },
+        buffers = {
+          file_icons = false,
+          git_icons = false,
+        },
+        fzf_opts = {
+          ["--layout"] = "default",
+        },
+        grep = {
+          rg_opts = table.concat({
             "--color=never",
             "--no-heading",
             "--with-filename",
             "--line-number",
             "--column",
             "--smart-case",
-            -- Leaving this here commented, as I use might switch to it from time to time
-            -- "--case-sensitive",
             "--hidden",
             "--glob",
             "!**/.git/*",
             "--glob",
             "!**/.venv/*",
-          },
-        },
-        pickers = {
-          find_files = {
-            find_command = {
-              "rg",
-              "--files",
-              "--hidden",
-              "--glob",
-              "!**/.git/*",
-              "--glob",
-              "!**/.venv/*",
-            },
-          },
-          live_grep = {
-            additional_args = function()
-              return { "--hidden", "--glob", "!**/.git/*" }
-            end,
-          },
+          }, " "),
         },
       })
-      local builtin = require("telescope.builtin")
-      vim.keymap.set("n", "<leader><leader>", builtin.find_files)
-      vim.keymap.set("n", "<leader>/", builtin.live_grep)
+
+      fzf.config.globals.files.cmd = "rg --files --hidden --glob '!**/.git/*' --glob '!**/.venv/*'"
+
+      vim.keymap.set("n", "<leader><leader>", fzf.files, { desc = "Find files" })
+      vim.keymap.set("n", "<leader>/", fzf.live_grep, { desc = "Live grep" })
     end,
   },
   -- neotree
