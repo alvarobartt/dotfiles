@@ -772,6 +772,7 @@ require("lazy").setup({
           ["rust-analyzer"] = {
             cargo = {
               allFeatures = true,
+              allTargets = false,
             },
             imports = {
               group = {
