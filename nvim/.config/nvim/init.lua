@@ -143,7 +143,7 @@ vim.api.nvim_create_autocmd("FileType", {
     -- highlight trailing whitespace as red blocks for specific file types only
     vim.schedule(function()
       vim.api.nvim_set_hl(0, "TrailingWhitespace", { bg = "#f43841", fg = "#f43841" })
-      vim.fn.matchadd('TrailingWhitespace', [[\s\+$]], 120)
+      vim.fn.matchadd("TrailingWhitespace", [[\s\+$]], 120)
     end)
   end,
 })
@@ -159,7 +159,7 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
   callback = function()
     -- Only apply to files with no filetype or text filetype
     if vim.bo.filetype == "" or vim.bo.filetype == "text" then
-      vim.fn.matchadd('TrailingWhitespace', [[\s\+$]])
+      vim.fn.matchadd("TrailingWhitespace", [[\s\+$]])
     end
   end,
 })
@@ -316,8 +316,8 @@ require("lazy").setup({
       vim.cmd([[colorscheme base16-gruvbox-dark-hard]])
       vim.o.background = "dark"
       -- Make comments more prominent
-      local bools = vim.api.nvim_get_hl(0, { name = 'Boolean' })
-      vim.api.nvim_set_hl(0, 'Comment', bools)
+      local bools = vim.api.nvim_get_hl(0, { name = "Boolean" })
+      vim.api.nvim_set_hl(0, "Comment", bools)
       -- Make it clearly visible which argument we're at
       local marked = vim.api.nvim_get_hl(0, { name = "PMenu" })
       vim.api.nvim_set_hl(
@@ -539,9 +539,9 @@ require("lazy").setup({
       local leap = require("leap")
       leap.opts.safe_labels = {}
       -- Create custom mappings to avoid conflicts
-      vim.keymap.set({ 'n', 'x', 'o' }, 's', '<Plug>(leap-forward)')
-      vim.keymap.set({ 'n', 'x', 'o' }, 'gs', '<Plug>(leap-backward)')
-      vim.keymap.set({ 'n', 'x', 'o' }, 'gz', '<Plug>(leap-from-window)')
+      vim.keymap.set({ "n", "x", "o" }, "s", "<Plug>(leap-forward)")
+      vim.keymap.set({ "n", "x", "o" }, "gs", "<Plug>(leap-backward)")
+      vim.keymap.set({ "n", "x", "o" }, "gz", "<Plug>(leap-from-window)")
     end,
   },
   -- better %
@@ -570,7 +570,7 @@ require("lazy").setup({
     end,
   },
   -- auto-cd to root of git project
-  -- 'airblade/vim-rooter'
+  -- "airblade/vim-rooter"
   {
     "notjedi/nvim-rooter.lua",
     config = function()
@@ -586,9 +586,9 @@ require("lazy").setup({
     config = function()
       -- Zig language server
       vim.lsp.config.zls = {
-        cmd = { 'zls' },
-        filetypes = { 'zig', 'zir' },
-        root_markers = { 'build.zig', '.git' },
+        cmd = { "zls" },
+        filetypes = { "zig", "zir" },
+        root_markers = { "build.zig", ".git" },
         settings = {
           zls = {
             -- Further information about build-on save:
@@ -597,7 +597,7 @@ require("lazy").setup({
           }
         }
       }
-      vim.lsp.enable('zls')
+      vim.lsp.enable("zls")
 
       -- you may never seen me actually coding in ts, but let's keep it here
       -- because I may eventually need it here and there
@@ -606,7 +606,7 @@ require("lazy").setup({
         filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
         root_markers = { "package.json", "tsconfig.json", ".git" },
         on_attach = function(_, bufnr)
-          -- disable ts_ls's formatting if you use another tool like prettier.
+          -- disable ts_ls formatting if you use another tool like prettier.
           -- client.server_capabilities.documentFormattingProvider = false
 
           -- create an autocmd group and set up formatting on save for the current buffer.
@@ -619,7 +619,7 @@ require("lazy").setup({
           })
         end,
       }
-      vim.lsp.enable('ts_ls')
+      vim.lsp.enable("ts_ls")
 
       -- Docker language server
       vim.lsp.config.dockerls = {
@@ -631,7 +631,7 @@ require("lazy").setup({
           client.server_capabilities.documentFormattingProvider = true
         end,
       }
-      vim.lsp.enable('dockerls')
+      vim.lsp.enable("dockerls")
 
       -- -- YAML language server
       -- TODO: at the moment all the default LSPs are disabled, but this should
@@ -668,14 +668,14 @@ require("lazy").setup({
           }
         }
       }
-      vim.lsp.enable('helm_ls')
+      vim.lsp.enable("helm_ls")
 
       vim.lsp.config.yamlls = {
         cmd = { "yaml-language-server", "--stdio" },
         filetypes = { "yaml", "yaml.docker-compose", "yaml.gitlab" },
         root_markers = { ".git" },
       }
-      vim.lsp.enable('yamlls')
+      vim.lsp.enable("yamlls")
 
       -- lua lsp
       vim.lsp.config.lua_ls = {
@@ -716,7 +716,7 @@ require("lazy").setup({
           }
         }
       }
-      vim.lsp.enable('lua_ls')
+      vim.lsp.enable("lua_ls")
 
       -- PyRight LSP
       vim.lsp.config.pyright = {
@@ -724,7 +724,7 @@ require("lazy").setup({
         filetypes = { "python" },
         root_markers = { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile", "pyrightconfig.json", ".git" },
       }
-      vim.lsp.enable('pyright')
+      vim.lsp.enable("pyright")
 
       -- Ruff LSP
       vim.lsp.config.ruff = {
@@ -761,7 +761,7 @@ require("lazy").setup({
           },
         }
       }
-      vim.lsp.enable('ruff')
+      vim.lsp.enable("ruff")
 
       -- Rust
       vim.lsp.config.rust_analyzer = {
@@ -787,7 +787,7 @@ require("lazy").setup({
           },
         },
       }
-      vim.lsp.enable('rust_analyzer')
+      vim.lsp.enable("rust_analyzer")
 
       -- Bash LSP
       vim.lsp.config.bashls = {
@@ -800,7 +800,7 @@ require("lazy").setup({
           },
         },
       }
-      vim.lsp.enable('bashls')
+      vim.lsp.enable("bashls")
 
       -- -- C language server (clangd)
       -- lspconfig.clangd.setup({
@@ -852,7 +852,7 @@ require("lazy").setup({
           vim.keymap.set("n", "<leader>wl", function()
             print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
           end, opts)
-          -- vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
+          -- vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition, opts)
           vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, opts)
           vim.keymap.set({ "n", "v" }, "<leader>a", vim.lsp.buf.code_action, opts)
           vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
@@ -991,7 +991,7 @@ require("lazy").setup({
       vim.g.vim_markdown_folding_disabled = 0
       -- support front-matter in .md files
       vim.g.vim_markdown_frontmatter = 1
-      -- 'o' on a list item should insert at same level
+      -- "o" on a list item should insert at same level
       vim.g.vim_markdown_new_list_item_indent = 0
       -- don't add bullets when wrapping:
       -- https://github.com/preservim/vim-markdown/issues/232
