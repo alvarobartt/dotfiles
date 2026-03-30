@@ -27,7 +27,6 @@ vim.opt.vb = true
 vim.opt.termguicolors = true
 vim.opt.diffopt:append("iwhite")
 vim.opt.diffopt:append("algorithm:histogram")
-vim.opt.diffopt:append("indent-heuristic")
 vim.opt.colorcolumn = "80"
 vim.api.nvim_create_autocmd("Filetype", { pattern = "rust", command = "set colorcolumn=100" })
 -- vim.api.nvim_create_autocmd("Filetype", { pattern = "python", command = "set colorcolumn=112" })
@@ -818,8 +817,10 @@ require("lazy").setup({
 
       -- Global mappings.
       vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float)
-      vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end)
-      vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end)
+      vim.keymap.set("n", "[d",
+        function() vim.diagnostic.jump({ count = -1, on_jump = function() vim.diagnostic.open_float() end }) end)
+      vim.keymap.set("n", "]d",
+        function() vim.diagnostic.jump({ count = 1, on_jump = function() vim.diagnostic.open_float() end }) end)
       vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist)
 
       -- apply code actions if any
@@ -834,7 +835,7 @@ require("lazy").setup({
           vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
 
           -- Buffer local mappings.
-          local opts = { buffer = ev.buf }
+          local opts = { buf = ev.buf }
           vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
           vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
           vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
