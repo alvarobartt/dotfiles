@@ -1,5 +1,7 @@
 git:
   overrideGpg: true
+  commit:
+    signOff: true
 
 gui:
   useHunkModeInStagingView: false
