@@ -41,19 +41,18 @@ set -g fish_color_valid_path --underline
 #     set_color normal
 # end
 
-# For Apple Silicon Macs
-set -gx PATH /opt/homebrew/bin:$PATH
+fish_add_path /opt/homebrew/bin
 
 # Install Starship
 starship init fish | source
 
 # Rust configuration
-set --export PATH $HOME/.cargo/bin $PATH
+fish_add_path $HOME/.cargo/bin
 set -gx CARGO_TARGET_DIR $HOME/.cargo-target
 
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
-set --export PATH $BUN_INSTALL/bin $PATH
+fish_add_path $BUN_INSTALL/bin
 
 # uv
 fish_add_path "$HOME/.local/bin"
