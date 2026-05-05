@@ -3,7 +3,7 @@
 set -euo pipefail
 
 usage() {
-    echo "Usage: $0 <on|off> <instance-name> [region] [profile]"
+    echo "Usage: $0 <on|off> <instance-name> [region] [profile] [ssh-key]"
     echo "   on: Start the EC2 instance by name and print its host IP"
     echo "  off: Stop the EC2 instance by name"
     exit 1
@@ -17,6 +17,7 @@ SUBCMD=$1
 INSTANCE_NAME=$2
 REGION="${3:-}"
 PROFILE="${4:-}"
+SSH_KEY="${5:-$HOME/HuggingFace/alvaro-dev-us.pem}"
 
 AWS_OPTS=()
 [[ -n "$REGION" ]] && AWS_OPTS+=(--region "$REGION")
@@ -90,7 +91,7 @@ on)
             exit 4
         fi
     fi
-    echo "ssh -i ~/HuggingFace/alvaro-dev-us.pem ubuntu@$IP"
+    echo "ssh -i $SSH_KEY ubuntu@$IP"
     ;;
 off)
     # Send stop request without waiting
