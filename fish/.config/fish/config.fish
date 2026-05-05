@@ -43,26 +43,28 @@ set -g fish_color_valid_path --underline
 
 fish_add_path /opt/homebrew/bin
 
-# Install Starship
-starship init fish | source
+if status --is-interactive; and command -q starship
+    # Install Starship
+    starship init fish | source
+end
 
 # Rust configuration
 fish_add_path $HOME/.cargo/bin
 set -gx CARGO_TARGET_DIR $HOME/.cargo-target
 
 # bun
-set --export BUN_INSTALL "$HOME/.bun"
+set -gx BUN_INSTALL "$HOME/.bun"
 fish_add_path $BUN_INSTALL/bin
 
 # uv
 fish_add_path "$HOME/.local/bin"
-uv generate-shell-completion fish | source
+if status --is-interactive; and command -q uv
+    uv generate-shell-completion fish | source
+end
 
 # pnpm
 set -gx PNPM_HOME "$HOME/Library/pnpm"
-if not string match -q -- $PNPM_HOME $PATH
-    set -gx PATH "$PNPM_HOME" $PATH
-end
+fish_add_path $PNPM_HOME
 # pnpm end
 
 # if status --is-interactive
@@ -72,9 +74,9 @@ end
 
 # zig language server
 set -gx ZLS_HOME "$HOME/zls"
-if not string match -q -- $ZLS_HOME $PATH
-    set -gx PATH "$ZLS_HOME" $PATH
-end
+fish_add_path $ZLS_HOME
 
 # activate default uv python env
-source $HOME/.venv/bin/activate.fish
+if test -f "$HOME/.venv/bin/activate.fish"
+    source "$HOME/.venv/bin/activate.fish"
+end
