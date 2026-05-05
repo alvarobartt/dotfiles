@@ -333,6 +333,8 @@ require("lazy").setup({
       vim.api.nvim_set_hl(0, "@comment.note", { fg = "#83a598", italic = true })
       vim.api.nvim_set_hl(0, "@comment.warning", { fg = "#fe8019", italic = true })
       vim.api.nvim_set_hl(0, "@comment.error", { fg = "#fb4934", italic = true })
+      vim.api.nvim_set_hl(0, "CommentError", { fg = "#fb4934", bg = "#3c3836" })
+      vim.fn.matchadd("CommentError", "\\<ERROR\\>")
       -- Custom highlight for SAFETY keyword (common in Rust)
       vim.api.nvim_set_hl(0, "CommentSafety", { fg = "#83a598", italic = true })
       vim.fn.matchadd("CommentSafety", "\\<SAFETY\\>")
