@@ -70,21 +70,6 @@ end
 #     source "$BASE16_SHELL/profile_helper.fish"
 # end
 
-alias hf-ssh="kitten ssh -i $HOME/HuggingFace/alvaro-dev-us.pem"
-alias hf-ssh-us="kitten ssh -i $HOME/HuggingFace/alvaro-dev-us.pem"
-alias hf-ssh-eu="kitten ssh -i $HOME/HuggingFace/alvaro-dev-eu.pem"
-alias hf-setup="$HOME/hf-setup.sh"
-alias hf-repo="$HOME/hf-repo.sh"
-
-alias turn-on="$HOME/ec2-on-off.sh on alvaro-gpu-dev us-east-1"
-alias turn-off="$HOME/ec2-on-off.sh off alvaro-gpu-dev us-east-1"
-
-alias give-me-tmux="$HOME/give-me-tmux.sh"
-alias gmt="$HOME/give-me-tmux.sh"
-
-alias checkout-tag="$HOME/checkout-tag.sh"
-alias cot="$HOME/checkout-tag.sh"
-
 # zig language server
 set -gx ZLS_HOME "$HOME/zls"
 if not string match -q -- $ZLS_HOME $PATH
