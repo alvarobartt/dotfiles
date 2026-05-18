@@ -299,6 +299,13 @@ require("lazy").setup({
     lazy = false,    -- load at start
     priority = 1000, -- load first
     config = function()
+      local function apply_gruber_terminal_palette()
+        vim.g.terminal_color_4 = "#7c92c5"
+        vim.g.terminal_color_6 = "#95a99f"
+        vim.g.terminal_color_12 = "#b7c9f4"
+        vim.g.terminal_color_14 = "#95a99f"
+      end
+
       require("gruber-darker").setup({
         opts = {
           bold = false,
@@ -307,10 +314,13 @@ require("lazy").setup({
           },
         },
       })
-      vim.g.terminal_color_4 = "#7c92c5"
-      vim.g.terminal_color_12 = "#b7c9f4"
       vim.o.background = "dark"
       vim.cmd([[colorscheme gruber-darker]])
+      apply_gruber_terminal_palette()
+      vim.api.nvim_create_autocmd("ColorScheme", {
+        pattern = "gruber-darker",
+        callback = apply_gruber_terminal_palette,
+      })
       -- Make comments more prominent
       local bools = vim.api.nvim_get_hl(0, { name = "Boolean" })
       vim.api.nvim_set_hl(0, "Comment", bools)
