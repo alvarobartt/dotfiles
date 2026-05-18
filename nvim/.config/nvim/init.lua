@@ -66,13 +66,6 @@ vim.keymap.set("n", "/", "/\\v")
 vim.keymap.set("c", "%s/", "%sm/")
 -- open new file adjacent to current file
 vim.keymap.set("n", "<leader>o", ':e <C-R>=expand("%:p:h") . "/" <cr>')
--- no arrow keys --- force yourself to use the home row
-vim.keymap.set("n", "<up>", "<nop>")
-vim.keymap.set("n", "<down>", "<nop>")
-vim.keymap.set("i", "<up>", "<nop>")
-vim.keymap.set("i", "<down>", "<nop>")
-vim.keymap.set("i", "<left>", "<nop>")
-vim.keymap.set("i", "<right>", "<nop>")
 -- window navigation
 vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Move to left window" })
 vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Move to lower window" })
@@ -81,12 +74,6 @@ vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Move to right window" })
 -- buffer navigation
 vim.keymap.set("n", "<S-h>", ":bp<CR>", { desc = "Prev buffer" })
 vim.keymap.set("n", "<S-l>", ":bn<CR>", { desc = "Next buffer" })
--- use arrow keys for buffer navigation
-vim.keymap.set("n", "<left>", ":bp<CR>", { desc = "Prev buffer" })
-vim.keymap.set("n", "<right>", ":bn<CR>", { desc = "Next buffer" })
--- let the left and right arrows be useful: they can switch buffers
-vim.keymap.set("n", "<left>", ":bp<cr>")
-vim.keymap.set("n", "<right>", ":bn<cr>")
 -- make j and k move by visual line, not actual line, when text is soft-wrapped
 vim.keymap.set("n", "j", "gj")
 vim.keymap.set("n", "k", "gk")
