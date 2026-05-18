@@ -307,6 +307,8 @@ require("lazy").setup({
           },
         },
       })
+      vim.g.terminal_color_4 = "#7c92c5"
+      vim.g.terminal_color_12 = "#b7c9f4"
       vim.o.background = "dark"
       vim.cmd([[colorscheme gruber-darker]])
       -- Make comments more prominent
