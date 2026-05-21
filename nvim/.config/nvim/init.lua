@@ -421,6 +421,17 @@ require("lazy").setup({
     },
     config = function()
       require("neo-tree").setup({
+        event_handlers = {
+          {
+            event = "neo_tree_popup_input_ready",
+            handler = function(args)
+              vim.keymap.set("i", "<M-Left>", "<C-Left>", { buffer = args.bufnr, noremap = true })
+              vim.keymap.set("i", "<M-Right>", "<C-Right>", { buffer = args.bufnr, noremap = true })
+              vim.keymap.set("i", "<M-b>", "<C-Left>", { buffer = args.bufnr, noremap = true })
+              vim.keymap.set("i", "<M-f>", "<C-Right>", { buffer = args.bufnr, noremap = true })
+            end,
+          },
+        },
         filesystem = {
           follow_current_file = {
             enabled = true,
