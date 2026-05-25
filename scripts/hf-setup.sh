@@ -126,6 +126,18 @@ chmod 600 ~/.ssh/config
 # chmod 600 ~/hf-sign-priv.asc
 # gpg --import ~/hf-sign-priv.asc
 
+# Set up Git configuration
+git config --global init.defaultbranch main
+git config --global pull.rebase false
+git config --global user.email "36760800+alvarobartt@users.noreply.github.com"
+git config --global user.name "Alvaro Bartolome"
+# NOTE: for Hugging Face repositories the SSH key cannot be used to sign the
+# commits, so we need to rely on `hf-repo.sh` to set the signing up with GPG, and
+# also to update the email.
+git config --global user.signingkey "~/.ssh/id_ed25519.pub"
+git config --global gpg.format ssh
+git config --global commit.gpgsign true
+
 # Function to check and install packages
 install_package() {
     if ! dpkg -s "$1" >/dev/null 2>&1; then
@@ -291,18 +303,6 @@ fi
 # Install LazyVim plugins
 echo "Installing LazyVim plugins..."
 nvim --headless '+Lazy install' '+MasonInstallAll' '+qall' >/dev/null 2>&1
-
-# Set up Git configuration
-git config --global init.defaultbranch main
-git config --global pull.rebase false
-git config --global user.email "36760800+alvarobartt@users.noreply.github.com"
-git config --global user.name "Alvaro Bartolome"
-# NOTE: for Hugging Face repositories the SSH key cannot be used to sign the
-# commits, so we need to rely on `hf-repo.sh` to set the signing up with GPG, and
-# also to update the email.
-git config --global user.signingkey "~/.ssh/id_ed25519.pub"
-git config --global gpg.format ssh
-git config --global commit.gpgsign true
 
 echo "Setup complete!"
 EOFSCRIPT
