@@ -16,6 +16,7 @@
 [init]
 	defaultBranch = main
 [core]
+	hooksPath = ~/.config/git/hooks
 	whitespace = trailing-space,space-before-tab
 [color "diff"]
 	whitespace = red reverse

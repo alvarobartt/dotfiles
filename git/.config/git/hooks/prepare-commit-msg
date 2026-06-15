@@ -1,0 +1,13 @@
+#!/bin/sh
+
+message_file=$1
+
+signoff=$(git var GIT_COMMITTER_IDENT | sed 's/>.*/>/')
+trailer="Signed-off-by: $signoff"
+
+if ! grep -Fqx "$trailer" "$message_file"; then
+	{
+		printf '\n'
+		printf '%s\n' "$trailer"
+	} >>"$message_file"
+fi
