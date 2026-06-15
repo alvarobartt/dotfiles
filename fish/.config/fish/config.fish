@@ -80,3 +80,5 @@ fish_add_path $ZLS_HOME
 if test -f "$HOME/.venv/bin/activate.fish"
     source "$HOME/.venv/bin/activate.fish"
 end
+
+set -gx XDG_CONFIG_HOME "$HOME/.config"
