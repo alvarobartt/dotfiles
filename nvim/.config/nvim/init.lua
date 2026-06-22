@@ -295,32 +295,12 @@ require("lazy").setup({
   rocks = { enabled = false },
   -- main color scheme
   {
-    "blazkowolf/gruber-darker.nvim",
+    "tinted-theming/tinted-vim",
     lazy = false,    -- load at start
     priority = 1000, -- load first
     config = function()
-      local function apply_gruber_terminal_palette()
-        vim.g.terminal_color_4 = "#7c92c5"
-        vim.g.terminal_color_6 = "#95a99f"
-        vim.g.terminal_color_12 = "#b7c9f4"
-        vim.g.terminal_color_14 = "#95a99f"
-      end
-
-      require("gruber-darker").setup({
-        opts = {
-          bold = false,
-          italic = {
-            strings = false,
-          },
-        },
-      })
+      vim.cmd([[colorscheme base16-gruvbox-dark-hard]])
       vim.o.background = "dark"
-      vim.cmd([[colorscheme gruber-darker]])
-      apply_gruber_terminal_palette()
-      vim.api.nvim_create_autocmd("ColorScheme", {
-        pattern = "gruber-darker",
-        callback = apply_gruber_terminal_palette,
-      })
       -- Make comments more prominent
       local bools = vim.api.nvim_get_hl(0, { name = "Boolean" })
       vim.api.nvim_set_hl(0, "Comment", bools)
@@ -332,27 +312,23 @@ require("lazy").setup({
         { fg = marked.fg, bg = marked.bg, ctermfg = marked.ctermfg, ctermbg = marked.ctermbg, bold = true }
       )
 
-      vim.api.nvim_set_hl(0, "Whitespace", { fg = "#282828", blend = 95 }) -- Subtle for normal spaces (gruber bg+1)
-      vim.api.nvim_set_hl(0, "TrailingWhitespace", { bg = "#f43841" })     -- Red background for trailing spaces
+      vim.api.nvim_set_hl(0, "Whitespace", { fg = "#3c3836", blend = 95 }) -- Subtle for normal spaces (gruvbox bg1)
+      vim.api.nvim_set_hl(0, "TrailingWhitespace", { bg = "#fb4934" })     -- Red background for trailing spaces
       -- Comment keywords highlighting (from wincent/base16-nvim)
-      vim.api.nvim_set_hl(0, "Todo", { fg = "#ffdd33", bg = "#282828" })
-      vim.api.nvim_set_hl(0, "@comment.todo", { fg = "#73c936", italic = true })
-      vim.api.nvim_set_hl(0, "@comment.note", { fg = "#96a6c8", italic = true })
-      vim.api.nvim_set_hl(0, "@comment.warning", { fg = "#cc8c3c", italic = true })
-      vim.api.nvim_set_hl(0, "@comment.error", { fg = "#f43841", italic = true })
-      vim.api.nvim_set_hl(0, "CommentError", { fg = "#f43841", bg = "#282828" })
+      vim.api.nvim_set_hl(0, "Todo", { fg = "#fabd2f", bg = "#3c3836" })
+      vim.api.nvim_set_hl(0, "@comment.todo", { fg = "#8ec07c", italic = true })
+      vim.api.nvim_set_hl(0, "@comment.note", { fg = "#83a598", italic = true })
+      vim.api.nvim_set_hl(0, "@comment.warning", { fg = "#fe8019", italic = true })
+      vim.api.nvim_set_hl(0, "@comment.error", { fg = "#fb4934", italic = true })
+      vim.api.nvim_set_hl(0, "CommentError", { fg = "#fb4934", bg = "#3c3836" })
       vim.fn.matchadd("CommentError", "\\<ERROR\\>")
       -- Custom highlight for SAFETY keyword (common in Rust)
-      vim.api.nvim_set_hl(0, "CommentSafety", { fg = "#96a6c8", italic = true })
+      vim.api.nvim_set_hl(0, "CommentSafety", { fg = "#83a598", italic = true })
       vim.fn.matchadd("CommentSafety", "\\<SAFETY\\>")
       -- Enable cursorline for CursorLineNr highlighting to work
       vim.opt.cursorline = true
-      vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#ffdd33" }) -- Yellow for current line number
+      vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#fabd2f" }) -- Yellow for current line number
     end,
-  },
-  {
-    "tinted-theming/tinted-vim",
-    lazy = true,
   },
   -- lazygit
   {

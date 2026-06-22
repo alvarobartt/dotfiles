@@ -1,4 +1,4 @@
-theme = gruber-darker
+theme = gruvbox-dark-hard
 
 shell-integration = fish
 
@@ -12,10 +12,10 @@ window-height = 47
 window-width = 206
 
 font-family = Berkeley Mono
-font-style = Light
-font-style-bold = SemiLight
-font-style-italic = Light
-font-style-bold-italic = SemiLight
+font-style = Regular
+font-style-bold = Bold
+font-style-italic = Oblique
+font-style-bold-italic = Bold Oblique
 font-size = 20.0
 
 keybind = alt+backspace=text:\x1b\x7f
