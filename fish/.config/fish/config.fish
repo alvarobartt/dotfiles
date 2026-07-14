@@ -82,3 +82,6 @@ if test -f "$HOME/.venv/bin/activate.fish"
 end
 
 set -gx XDG_CONFIG_HOME "$HOME/.config"
+
+# opencode
+fish_add_path /Users/alvarobartt/.opencode/bin
