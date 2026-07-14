@@ -53,7 +53,12 @@ run_remote() {
     $scp_cmd ~/.config/nvim/lazy-lock.json "$USER@$IP:~/.config/nvim/lazy-lock.json"
     $scp_cmd ~/.ssh/id_ed25519 "$USER@$IP:~/.ssh/id_ed25519"
     $scp_cmd ~/.ssh/id_ed25519.pub "$USER@$IP:~/.ssh/id_ed25519.pub"
-    $scp_cmd ~/.tmux.conf "$USER@$IP:~/.tmux.conf"
+    # Copy .tmux.conf, dropping the `set -g extended-keys*` lines which are not
+    # supported by the tmux version available on the remote machine
+    TMUX_CONF_TMP=$(mktemp)
+    grep -v '^set -g extended-keys' ~/.tmux.conf >"$TMUX_CONF_TMP"
+    $scp_cmd "$TMUX_CONF_TMP" "$USER@$IP:~/.tmux.conf"
+    rm -f "$TMUX_CONF_TMP"
 
     # Also add the GPG key used to sign commits on the Hugging Face Hub
     # TODO(gpg): Temporarily remove until fully fixed
@@ -164,6 +169,9 @@ install_package protobuf-compiler
 
 # Also install `cmake` which is required for building some packages from source
 install_package cmake
+
+# Also install `fzf` which is used for fuzzy finding within the shell and tmux
+install_package fzf
 
 # Remove pyenv if it exists
 if [ -d "$HOME/.pyenv" ]; then
@@ -285,13 +293,14 @@ else
 fi
 
 if [ "$INSTALL_LAZYGIT" = true ]; then
-    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | rg -Po '"tag_name": "v\K[^"]*')
+    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | rg -Po '"tag_name": *"v\K[^"]*')
+    LAZYGIT_ARCH=$(uname -m | sed -e 's/aarch64/arm64/')
 
-    echo "Downloading LazyGit v${LAZYGIT_VERSION}..."
+    echo "Downloading LazyGit v${LAZYGIT_VERSION} (${LAZYGIT_ARCH})..."
     if curl --retry 5 --retry-delay 3 --max-time 120 -fSLo lazygit.tar.gz \
-        "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"; then
+        "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_${LAZYGIT_ARCH}.tar.gz"; then
         tar xf lazygit.tar.gz lazygit
-        sudo install lazygit /usr/local/bin
+        sudo install lazygit -D -t /usr/local/bin/
         rm -f lazygit lazygit.tar.gz
         echo "LazyGit installed successfully."
     else
