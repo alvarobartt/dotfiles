@@ -72,7 +72,7 @@ run_remote() {
     infocmp -x xterm-ghostty 2>/dev/null | $ssh_cmd "$USER@$IP" 'tic -x - 2>/dev/null' || true
 
     # Run the setup script with an updated PATH
-    $ssh_cmd "$USER@$IP" 'PATH=\$PATH:/usr/bin:/bin:/usr/local/bin bash -s' <<EOF
+    $ssh_cmd "$USER@$IP" 'PATH="$PATH:/usr/bin:/bin:/usr/local/bin" bash -s' <<EOF
 # Source .bashrc and .profile if they exist
 [ -f ~/.bashrc ] && source ~/.bashrc
 [ -f ~/.profile ] && source ~/.profile
@@ -86,6 +86,8 @@ EOF
 REMOTE_SCRIPT=$(
     cat <<'EOFSCRIPT'
 #!/bin/bash
+
+set -eo pipefail
 
 # Ensure .bashrc is sourced on login shells
 if ! grep -qxF 'if [ -f ~/.bashrc ]; then . ~/.bashrc; fi' ~/.bash_profile 2>/dev/null; then
@@ -169,6 +171,8 @@ install_package protobuf-compiler
 
 # Also install `cmake` which is required for building some packages from source
 install_package cmake
+# Keep Neovim's CMake generator consistent across builds.
+install_package ninja-build
 
 # Also install `fzf` which is used for fuzzy finding within the shell and tmux
 install_package fzf
@@ -176,7 +180,7 @@ install_package fzf
 # Remove pyenv if it exists
 if [ -d "$HOME/.pyenv" ]; then
     echo "Removing pyenv..."
-    rm -rf $(pyenv root)
+    rm -rf "$HOME/.pyenv"
     sed -i '/pyenv/d' ~/.bashrc ~/.profile ~/.zshrc 2>/dev/null || true
 fi
 
@@ -197,7 +201,7 @@ uv python pin 3.12
 
 # Create a virtual environment in the home directory using Python 3.12 with uv
 VIRTUAL_ENV="$HOME/.venv"
-if [ ! -d "$VENV_DIR" ]; then
+if [ ! -d "$VIRTUAL_ENV" ]; then
     echo "Creating virtual environment with Python 3.12..."
     uv venv $HOME/.venv --python 3.12
     source $HOME/.venv/bin/activate
@@ -224,19 +228,27 @@ grep -qxF 'source $HOME/.cargo/env' ~/.bashrc || echo 'source $HOME/.cargo/env' 
 
 echo "Installing rust-analyzer..."
 rustup component add rust-analyzer
-echo "Installing sd (sed replacement)"
-cargo install sd
+if ! command -v sd >/dev/null 2>&1; then
+    echo "Installing sd (sed replacement)"
+    cargo install sd
+fi
 
 # NOTE: both `rg` and `fd` are required by `telescope.nvim`
 # NOTE: `rg` is required within this build script to grab the latest version of
 # both `nvim` and `lazygit` from GitHub Releases, and `--features pcre2` is to
 # be able to use `rg -Po ...`
-echo "Installing rg (grep replacement)"
-cargo install ripgrep --features pcre2
-echo "Installing fd (find replacement)"
-cargo install fd-find
-echo "Installing cargo-insta (snapshot testing)"
-cargo install cargo-insta
+if ! command -v rg >/dev/null 2>&1; then
+    echo "Installing rg (grep replacement)"
+    cargo install ripgrep --features pcre2
+fi
+if ! command -v fd >/dev/null 2>&1; then
+    echo "Installing fd (find replacement)"
+    cargo install fd-find
+fi
+if ! command -v cargo-insta >/dev/null 2>&1; then
+    echo "Installing cargo-insta (snapshot testing)"
+    cargo install cargo-insta
+fi
 
 # NOTE: not included by default, but I use it quite often so here in case I change
 # my mind and want to add it within my defaults
@@ -268,12 +280,14 @@ fi
 
 if [ "$INSTALL_NVIM" = true ]; then
     LATEST_NVIM_VERSION=$(curl -s "https://api.github.com/repos/neovim/neovim/releases/latest" | rg -Po '"tag_name": "v\K[^"]*')
-    sudo apt remove neovim -y || true
-    sudo rm -rf $HOME/neovim || true
-    sudo rm -rf $VIMRUNTIME || true
-    git clone https://github.com/neovim/neovim $HOME/neovim
-    cd $HOME/neovim && git checkout "v$LATEST_NVIM_VERSION" && make CMAKE_BUILD_TYPE=RelWithDebInfo && sudo make install
-    sudo rm -rf $HOME/neovim
+    NVIM_BUILD_DIR=$(mktemp -d)
+    git clone --depth 1 --branch "v$LATEST_NVIM_VERSION" https://github.com/neovim/neovim "$NVIM_BUILD_DIR/neovim"
+    (
+        cd "$NVIM_BUILD_DIR/neovim"
+        make CMAKE_GENERATOR=Ninja CMAKE_BUILD_TYPE=RelWithDebInfo
+        sudo make CMAKE_GENERATOR=Ninja install
+    )
+    rm -rf "$NVIM_BUILD_DIR"
 fi
 
 # Install or update LazyGit
@@ -295,17 +309,19 @@ fi
 if [ "$INSTALL_LAZYGIT" = true ]; then
     LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | rg -Po '"tag_name": *"v\K[^"]*')
     LAZYGIT_ARCH=$(uname -m | sed -e 's/aarch64/arm64/')
+    LAZYGIT_TMP=$(mktemp -d)
 
     echo "Downloading LazyGit v${LAZYGIT_VERSION} (${LAZYGIT_ARCH})..."
-    if curl --retry 5 --retry-delay 3 --max-time 120 -fSLo lazygit.tar.gz \
+    if curl --retry 5 --retry-delay 3 --max-time 120 -fSLo "$LAZYGIT_TMP/lazygit.tar.gz" \
         "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_${LAZYGIT_ARCH}.tar.gz"; then
-        tar xf lazygit.tar.gz lazygit
-        sudo install lazygit -D -t /usr/local/bin/
-        rm -f lazygit lazygit.tar.gz
+        tar -C "$LAZYGIT_TMP" -xf "$LAZYGIT_TMP/lazygit.tar.gz" lazygit
+        sudo install -m 755 "$LAZYGIT_TMP/lazygit" /usr/local/bin/lazygit
+        rm -rf "$LAZYGIT_TMP"
         echo "LazyGit installed successfully."
     else
-        echo "Warning: Failed to download LazyGit. Skipping LazyGit installation."
-        rm -f lazygit.tar.gz
+        rm -rf "$LAZYGIT_TMP"
+        echo "Failed to download LazyGit." >&2
+        exit 1
     fi
 fi
 
