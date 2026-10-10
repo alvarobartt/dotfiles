@@ -18,4 +18,7 @@ font-style-italic = SemiLight ExtraCondensed Oblique
 font-style-bold-italic = Medium ExtraCondensed Oblique
 font-size = 20.0
 
+# Kitty graphics protocol image storage per screen, in bytes (0 disables images)
+image-storage-limit = 320000000
+
 keybind = alt+backspace=text:\x1b\x7f
