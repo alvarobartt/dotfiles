@@ -70,6 +70,12 @@ run_remote() {
     # Copy Ghostty terminfo to remote
     # https://ghostty.org/docs/help/terminfo#copy-ghostty's-terminfo-to-a-remote-machine
     infocmp -x xterm-ghostty 2>/dev/null | $ssh_cmd "$USER@$IP" 'tic -x - 2>/dev/null' || true
+    # Mark the host as having the Ghostty terminfo so that Ghostty's `ssh-terminfo`
+    # shell integration skips the install on connect
+    # https://ghostty.org/docs/features/ssh
+    if command -v ghostty >/dev/null 2>&1; then
+        ghostty +ssh-cache --add="$USER@$IP" >/dev/null 2>&1 || true
+    fi
 
     # Run the setup script with an updated PATH
     $ssh_cmd "$USER@$IP" 'PATH="$PATH:/usr/bin:/bin:/usr/local/bin" bash -s' <<EOF
@@ -121,6 +127,19 @@ if [ -n "$SSH_CONNECTION" ] && [ -z "$SSH_AGENT_PID" ]; then
     ssh-add ~/.ssh/id_ed25519
 fi
 EOF
+fi
+
+# Accept the env vars forwarded by Ghostty's `ssh-env` shell integration
+# https://ghostty.org/docs/features/ssh
+GHOSTTY_SSHD_CONF=/etc/ssh/sshd_config.d/ghostty.conf
+if [ ! -f "$GHOSTTY_SSHD_CONF" ]; then
+    echo 'AcceptEnv COLORTERM TERM_PROGRAM TERM_PROGRAM_VERSION' | sudo tee "$GHOSTTY_SSHD_CONF" >/dev/null
+    if sudo sshd -t; then
+        sudo systemctl reload ssh 2>/dev/null || sudo systemctl reload sshd
+    else
+        echo "Invalid sshd config, removing $GHOSTTY_SSHD_CONF" >&2
+        sudo rm -f "$GHOSTTY_SSHD_CONF"
+    fi
 fi
 
 # Set correct permissions for SSH keys

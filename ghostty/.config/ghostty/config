@@ -1,6 +1,8 @@
 theme = gruvbox-dark-hard
 
 shell-integration = fish
+# Forward COLORTERM/TERM_PROGRAM and install xterm-ghostty terminfo on SSH remotes
+shell-integration-features = ssh-env,ssh-terminfo
 
 macos-titlebar-style = tabs
 
